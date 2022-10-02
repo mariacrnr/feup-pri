@@ -4,13 +4,12 @@ import re
 from sympy import true
 
 
-def text_cleanup(content):
+# def text_cleanup(content):
 
-    text = content.decode("UTF-8",'replace')
-    clean_text = re.sub("[\n\t\r]"," ",text)
-    evenly_spaced_text = re.sub(" +"," ",clean_text)
+#     clean_text = re.sub("[\n\t\r]"," ",text)
+#     evenly_spaced_text = re.sub(" +"," ",clean_text)
 
-    return evenly_spaced_text
+#     return evenly_spaced_text
 
 def start_data_requests(hits_per_page, date, website):
 
@@ -21,7 +20,7 @@ def start_data_requests(hits_per_page, date, website):
 
         request = requests.get("https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ str(date) +"&dedupValue=" + str(hits_per_page) + "&maxItems=" +
             str(hits_per_page)+"&offset="+ str(i * hits_per_page))    
-        print("Request Processed")
+        # print("Request Processed")
 
         data = json.loads(request.content)
         hits = len(data["response_items"])
@@ -31,11 +30,10 @@ def start_data_requests(hits_per_page, date, website):
 
         for item in data["response_items"]:
             next_request = requests.get(item["linkToExtractedText"])
-            print(next_request.status_code)
 
-            text = text_cleanup(next_request.content);
+            text = next_request.content.decode("UTF-8",'replace')
 
-            jsonData.append({"date": item["tstamp"], "link": item["linkToArchive"], "contentLength": item["contentLength"], "text": text})
+            jsonData.append({"date": item["date"], "link": item["linkToArchive"], "contentLength": len(text), "text": text})
             
         f.write(json.dumps(jsonData, indent=4, ensure_ascii=False))
         f.close()
@@ -43,4 +41,4 @@ def start_data_requests(hits_per_page, date, website):
         i+=1
         
 
-start_data_requests(100, 2020, "www.pcp.pt")
+start_data_requests(100, 2020, "www.ps.pt")
