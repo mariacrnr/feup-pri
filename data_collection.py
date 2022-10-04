@@ -1,44 +1,62 @@
 import requests
 import json
-import re
-from sympy import true
+from calendar import monthrange
 
 
-# def text_cleanup(content):
+def get_estimated_number_results(website, date):
+    request = requests.get("https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ str(date))
+    data = json.loads(request.content)
+    estimated_nr_results = data["estimated_nr_results"]
+    return estimated_nr_results
+    
+def number_of_days_in_month(year:int, month:int):
+    return monthrange(year, month)[1]
 
-#     clean_text = re.sub("[\n\t\r]"," ",text)
-#     evenly_spaced_text = re.sub(" +"," ",clean_text)
+def request_and_save(request_string,file_name):
 
-#     return evenly_spaced_text
+    f = open(file_name, "w")
+    request = requests.get(request_string)
+    data = json.loads(request.content)
+    jsonData = []
 
-def start_data_requests(hits_per_page, date, website):
+    for item in data["response_items"]:
+        next_request = requests.get(item["linkToExtractedText"])
+        #print("1 item")
+        text = next_request.content.decode("UTF-8",'replace')
 
-    hits=1
-    i=0
+        jsonData.append({"date": item["date"], "link": item["linkToArchive"], "contentLength": len(text), "text": text})
 
-    while(hits > 0):
+def start_data_requests(start_year, end_year, website, file_name):
 
-        request = requests.get("https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ str(date) +"&dedupValue=" + str(hits_per_page) + "&maxItems=" +
-            str(hits_per_page)+"&offset="+ str(i * hits_per_page))    
-        # print("Request Processed")
+    f = open(file_name, "w")
+    f.close()
+    jsonData = []
 
-        data = json.loads(request.content)
-        hits = len(data["response_items"])
+    for j in range(end_year-start_year):
+        year_str=str(start_year+j)
+        for i in range(12):
+            month_str=("0"+str(i+1)) if i<9 else str(i+1)
 
-        jsonData = []
-        f = open(str(i)+".json", "w")
+            start_date=str(year_str)+str(month_str)+"01"+"000000"
+            end_date=str(year_str)+str(month_str)+str(number_of_days_in_month(start_year+j,i+1))+"000000"
 
-        for item in data["response_items"]:
-            next_request = requests.get(item["linkToExtractedText"])
+            request = requests.get("https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ start_date+ "&to="+ end_date + "&dedupValue=10&maxItems=10")
+            print("Start date: "+start_date)
+            print("End date: "+ end_date)
 
-            text = next_request.content.decode("UTF-8",'replace')
+            data = json.loads(request.content)
 
-            jsonData.append({"date": item["date"], "link": item["linkToArchive"], "contentLength": len(text), "text": text})
+            for item in data["response_items"]:
+                next_request = requests.get(item["linkToExtractedText"])
+                #print("1 item")
+                text = next_request.content.decode("UTF-8",'replace')
+
+                jsonData.append({"date": item["date"], "link": item["linkToArchive"], "contentLength": len(text), "text": text})
+                
+    f.write(json.dumps(jsonData, indent=4, ensure_ascii=False))
             
-        f.write(json.dumps(jsonData, indent=4, ensure_ascii=False))
-        f.close()
 
-        i+=1
-        
 
-start_data_requests(100, 2020, "www.ps.pt")
+#political_parties = {"ps.pt": 1999, "www.psd.pt": 1996, "partidochega.pt": 2019 , "iniciativaliberal.pt": 2017 , "pcp.pt": 1996, "www.bloco.org": 2005, "www.pan.com.pt": 2013, "partidolivre.pt": 2018}
+
+start_data_requests(1999, 2001, "www.ps.pt","ps.json")
