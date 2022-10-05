@@ -1,4 +1,3 @@
-from concurrent.futures import ALL_COMPLETED, ThreadPoolExecutor,wait
 from time import sleep
 import requests
 import json
@@ -11,7 +10,7 @@ def number_of_days_in_month(year:int, month:int):
 
 def retrieve_data(start_year, end_year, website,output_file_name):
 
-    f = open(output_file_name+".json", "w")
+    f = open("data/" + output_file_name+".json", "w")
     f.write("[\n")
 
     request_counter=0
@@ -26,7 +25,7 @@ def retrieve_data(start_year, end_year, website,output_file_name):
             start_date=str(year_str)+str(month_str)+"01"+"000000"
             end_date=str(year_str)+str(month_str)+str(number_of_days_in_month(start_year+j,i+1))+"000000"
 
-            request_string = "https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ start_date+ "&to="+ end_date + "&dedupValue=2000&maxItems=10"
+            request_string = "https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ start_date+ "&to="+ end_date + "&dedupValue=2000&maxItems=2000"
 
             if(request_counter==250):
                 sleep(60)
@@ -76,4 +75,4 @@ def retrieve_data(start_year, end_year, website,output_file_name):
 #political_parties = {"ps.pt": 1999, "www.psd.pt": 1996, "partidochega.pt": 2019 , "iniciativaliberal.pt": 2017 , "pcp.pt": 1996, "www.bloco.org": 2005, "www.pan.com.pt": 2013, "partidolivre.pt": 2018}
 
 
-retrieve_data(1999, 2004, "www.psd.pt","psd")
+retrieve_data(1999, 2001, "www.psd.pt","psd")
