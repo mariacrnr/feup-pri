@@ -3,7 +3,6 @@ from time import sleep
 import requests
 import json
 from calendar import monthrange
-from os import remove
 
 
 def number_of_days_in_month(year:int, month:int):
@@ -27,7 +26,7 @@ def retrieve_data(start_year, end_year, website,output_file_name):
             start_date=str(year_str)+str(month_str)+"01"+"000000"
             end_date=str(year_str)+str(month_str)+str(number_of_days_in_month(start_year+j,i+1))+"000000"
 
-            request_string = "https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ start_date+ "&to="+ end_date + "&dedupValue=2000&maxItems=2000"
+            request_string = "https://arquivo.pt/textsearch?q=&siteSearch=" + website + "&from="+ start_date+ "&to="+ end_date + "&dedupValue=2000&maxItems=10"
 
             if(request_counter==250):
                 sleep(60)
@@ -65,8 +64,8 @@ def retrieve_data(start_year, end_year, website,output_file_name):
                     request_counter+=1
 
                 text = next_request.content.decode("UTF-8",'replace')
-                json.dump({"date": data["response_items"][k]["date"], "link": data["response_items"][k]["linkToArchive"], "contentLength": len(text), "text": text}, fp=f,indent=4, ensure_ascii=False)
-                if((k+1)!=len(data["response_items"]) and (i+1)!=12 and (j+1)!=(end_year-start_year)):
+                json.dump({"date": data["response_items"][k]["date"], "link": data["response_items"][k]["linkToArchive"], "contentLength": len(text),"type":data["response_items"][k]["mimeType"] ,"text": text}, fp=f,indent=4, ensure_ascii=False)
+                if((k+1)!=len(data["response_items"]) or (i+1)!=12 or (j+1)!=(end_year-start_year)):
                     f.write(",\n")
     f.write("\n]")
 
@@ -76,4 +75,5 @@ def retrieve_data(start_year, end_year, website,output_file_name):
 
 #political_parties = {"ps.pt": 1999, "www.psd.pt": 1996, "partidochega.pt": 2019 , "iniciativaliberal.pt": 2017 , "pcp.pt": 1996, "www.bloco.org": 2005, "www.pan.com.pt": 2013, "partidolivre.pt": 2018}
 
-retrieve_data(1999, 2023, "www.ps.pt","ps")
+
+retrieve_data(1999, 2004, "www.psd.pt","psd")
