@@ -1,34 +1,45 @@
-# The all target helps automate the whole process: by running `make` from the command line, you can do everything in one go
-# You can define further targets that only execute smaller subsets of your data pipeline according to your needs
 all: clean collect process analyze
 
 clean:
-	rm -rf data processed analysis
+	rm -rf data
+clean_collection:
+	rm -rf raw
+clean_process:
+	rm -rf data/clean
+	rm -rf data/refined
+clean_analysis:
+	rm -rf analysis/output
 
 .PHONY: collect processed analysis adhoc
-collect:
-	mkdir -p data/...
-	Rscript code/get_data_1.R
 
-process:
-	# This target is reserved for data processing, which typically includes
-	# cleaning and refinement.
-	# As best practice, have multiple scripts to perform different (sub)steps
-	# You may even opt for several targets for bigger granularity
-	# (e.g., a process_cleaning and a process_refinement target)
-	# Moreover, ensure that data also goes to a known location for easier analysis
-	mkdir -p processed/...
-	Rscript code/process_data1.R
-	sh code/process_data2.sh
-	python3 code/process_data3.py
+collect: collect_data merge_data
+collect_data:
+	mkdir -p data/raw
+	python3 collection/data_collection.py	
+merge_data:
+	python3 collection/data_merging.py
 
-analyze:
-	# This target is recommended to isolate all data analysis scripts.
-	# Once again, it is recommended to separate different types of analysis between scripts,
-	# which may span several languages. Diversity is key here so data can be better understood.
-	mkdir -p analysis/...
-	Rscript code/produce_some_plots.R
-	go run code/do_text_analysis.go
+
+process: process_cleaning process_refinement
+process_cleaning:
+	mkdir -p data/clean
+	python3 processing/data_cleaning.py
+process_refinement:
+	mkdir -p data/refined
+	python3 processing/data_refinement.py
+
+
+analyze: analyze_nulls
+analyze_nulls:
+	mkdir -p analysis/output/null_analysis
+	python3 analysis/null_analysis.py
+analyze_text:
+	mkdir -p analysis/output/text_analysis
+	python3 analysis/text_analysis.py
+analyze_words:
+	mkdir -p analysis/output/words_analysis
+	python3 analysis/words_analysis.py
+
 
 adhoc:
 	# This target is not part of the overall automation, but it can be useful to have something similar
