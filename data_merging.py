@@ -9,3 +9,4 @@ def combine_data(file1, file2):
     return combined_data
 
 combined_data = combine_data("data/ps.json", "data/pswww.json")
+combined_data.to_json(r'data/ps_merged.json', orient='records')
