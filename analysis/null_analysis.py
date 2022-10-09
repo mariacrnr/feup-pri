@@ -49,7 +49,7 @@ def plot_missing_data_per_type(df, missing_values, group):
     plt.ylabel('Number of Pages')
     fig.autofmt_xdate()
 
-    fig.savefig("analysis/output/null_analysis/" + group + "/missing_text_per_type_" + group + ".png", dpi=1000)
+    fig.savefig(path + group + "/missing_text_per_type_" + group + ".png", dpi=1000)
 
 def run(group):
     os.makedirs(path + group, exist_ok=True)

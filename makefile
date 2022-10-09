@@ -9,6 +9,13 @@ clean_process:
 	rm -rf data/refined
 clean_analysis:
 	rm -rf analysis/output
+clean_null_analysis:
+	rm -rf analysis/output/null_analysis
+clean_text_analysis:
+	rm -rf analysis/output/text_analysis
+clean_words_analysis:
+	rm -rf analysis/output/words_analysis
+
 
 .PHONY: collect processed analysis adhoc
 
@@ -33,12 +40,23 @@ analyze: analyze_nulls
 analyze_nulls:
 	mkdir -p analysis/output/null_analysis
 	python3 analysis/null_analysis.py
-analyze_text:
-	mkdir -p analysis/output/text_analysis
-	python3 analysis/text_analysis.py
-analyze_words:
-	mkdir -p analysis/output/words_analysis
-	python3 analysis/words_analysis.py
+
+analyze_text: webpages_stats length_stats
+webpages_stats:
+	mkdir -p analysis/output/text_analysis/webpages
+	python3 analysis/text_analysis/webpages.py
+length_stats: 
+	mkdir -p analysis/output/text_analysis/length
+	python3 analysis/text_analysis/length.py
+
+analyze_words: analyze_frequencies analyze_wordclouds
+analyze_frequencies:
+	mkdir -p analysis/output/words_analysis/frequencies
+	python3.py analysis/words_analysis/frequencies.py
+analyze_wordclouds:
+	mkdir -p analysis/output/words_analysis/wordclouds
+	python3  analysis/words_analysis/wordclouds.py
+
 
 
 adhoc:
