@@ -48,7 +48,7 @@ def plot_pages_per_month(df):
     plt.xlabel('Months 2017-2022')
     plt.ylabel('Number of Pages')
 
-    fig.savefig(path + "/pages_per_month.png", dpi=1000)
+    fig.savefig(path + "/pages_per_month.png", dpi=72)
 
 def pages_per_year(df, start, end):
     group_by_year = df['text'].groupby(by=[df['date'].dt.year])
@@ -85,13 +85,14 @@ def plot_pages_per_year(df):
     plt.xlabel('Year')
     plt.ylabel('Number of Pages')
 
-    fig.savefig(path + "/pages_per_year.png", dpi=1000)
+    fig.savefig(path + "/pages_per_year.png", dpi=72)
 
 def pages_stats(df):
     pages_data = {'Avg Number of Pages': [df[0]['Number of Pages'].mean(), df[1]['Number of Pages'].mean(), df[2]['Number of Pages'].mean(), df[3]['Number of Pages'].mean()],
               'Min': [df[0]['Number of Pages'].min(), df[1]['Number of Pages'].min(), df[2]['Number of Pages'].min(), df[3]['Number of Pages'].min()],
               'Max': [df[0]['Number of Pages'].max(), df[1]['Number of Pages'].max(), df[2]['Number of Pages'].max(), df[3]['Number of Pages'].max()]}
     total_pages = pd.DataFrame(pages_data, ['PS', 'PSD', 'CH', 'IL'])
+
     save_dataframe_as_png(total_pages, "total_pages_stats")
 
 def run():

@@ -95,7 +95,7 @@ def plot_pie_chart(groups, data, partie):
     
     plt.setp(autotexts, size = 6, weight ="bold")
     
-    plt.savefig(path + "/mentions_of_other_parties_" + partie + ".png", dpi=1000)
+    plt.savefig(path + "/mentions_of_other_parties_" + partie + ".png", dpi=72)
     
 
 def run():

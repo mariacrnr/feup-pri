@@ -45,6 +45,7 @@ def total_length_stats(df):
                 'Min': [df[0]['Min'].min(), df[1]['Min'].min(), df[2]['Min'].min(), df[3]['Min'].min()],
                 'Max': [df[0]['Max'].max(), df[1]['Max'].max(), df[2]['Max'].max(), df[3]['Max'].max()]}
     total_length = pd.DataFrame(length_data, ['PS', 'PSD', 'CH', 'IL'])
+
     save_dataframe_as_png(total_length, "total_pages_stats")
 
 

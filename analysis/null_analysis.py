@@ -17,12 +17,19 @@ def save_dataframe_as_png(df, table_name):
 def replace_empty_with_nulls(df):
     return df.replace(r'^\s*$', np.nan, regex=True)
 
-def total_missing_data(df, group):
+def total_missing_data(df, group, missing_data):
     total = df.isnull().sum()
     percent = df.isnull().sum()/df.isnull().count()*100.0
-    missing_data = pd.concat([total, percent], axis=1, keys=['Number', 'Percent'])
+    total_missing = pd.concat([total, percent], axis=1, keys=['Number', 'Percent'])
 
-    save_dataframe_as_png(missing_data, group + '/total_missing_data_' + group)
+    save_dataframe_as_png(total_missing, group + '/total_missing_data_' + group)
+
+    total_missing = total_missing.loc[['text']]
+
+    missing_data[0].append(total_missing.iloc[0]['Number'])
+    missing_data[1].append(total_missing.iloc[0]['Percent'])
+
+    return missing_data
 
 def missing_data_per_group(df, group):
     total_values_per_type = df['type'].value_counts()
@@ -49,7 +56,13 @@ def plot_missing_data_per_type(df, missing_values, group):
     plt.ylabel('Number of Pages')
     fig.autofmt_xdate()
 
-    fig.savefig(path + group + "/missing_text_per_type_" + group + ".png", dpi=1000)
+    fig.savefig(path + group + "/missing_text_per_type_" + group + ".png", dpi=72)
+
+def missing_data_all_parties(missing_data):
+    total_missing = {'Missing Data': missing_data[0], 'Percentage': missing_data[1]}
+    total_missing = pd.DataFrame(total_missing, ['PS', 'PSD', 'CH', 'IL'])
+
+    save_dataframe_as_png(total_missing, 'total_missing_data')
 
 def run(group):
     os.makedirs(path + group, exist_ok=True)
@@ -60,10 +73,23 @@ def run(group):
     plot_missing_data_per_type(df, missing_values, group)
 
 
-def run_all():
+def run():
     political_parties = ['ps_merged', 'psd', 'ch', 'il']
-    for group in political_parties:
-        run(group)
 
-run_all()
+    missing_data = [[],[]]
+    for group in political_parties:
+        os.makedirs(path + group, exist_ok=True)
+
+        df = import_clean_data(group)
+        df = replace_empty_with_nulls(df)
+
+        missing_data = total_missing_data(df, group, missing_data)
+
+        missing_values = missing_data_per_group(df, group)
+        plot_missing_data_per_type(df, missing_values, group)
+
+    missing_data_all_parties(missing_data)
+    
+
+run()
 

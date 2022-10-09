@@ -30,7 +30,7 @@ def plot_wordcloud(df_without_stopwords, group):
     plt.figure( figsize=(20,10) )
     plt.imshow(wordcloud)
     plt.axis('off')
-    plt.savefig(path + "/wordcloud_" + group + ".png", dpi=1000)
+    plt.savefig(path + "/wordcloud_" + group + ".png", dpi=72)
 
 def run():
     political_parties = ['ps_merged', 'psd', 'ch', 'il']
