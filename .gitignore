@@ -1,3 +1,5 @@
 data/
 .ipynb_checkpoints
 analysis/output
+analysis/data_exploration.pdf
+processing/data_preparation.pdf

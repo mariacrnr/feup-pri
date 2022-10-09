@@ -26,8 +26,6 @@ def run():
         df = remove_empty_text(df)
         df = remove_duplicate_text(df)
 
-        print(df.head())
-
         save_refined_data(group, df)
 
 run()
