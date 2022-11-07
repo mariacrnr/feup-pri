@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import dataframe_image as dfi
 import os
 
 path = "analysis/output/null_analysis/"
@@ -10,9 +9,8 @@ def import_clean_data(group):
     df = pd.read_json("data/clean/" + group + '_clean.json')
     return df
 
-def save_dataframe_as_png(df, table_name):
-    df_styled = df.style.background_gradient()
-    dfi.export(df_styled, path + table_name + ".png")
+def save_dataframe_as_csv(df, table_name):
+    df.to_csv(path + table_name + ".csv")
 
 def replace_empty_with_nulls(df):
     return df.replace(r'^\s*$', np.nan, regex=True)
@@ -22,7 +20,7 @@ def total_missing_data(df, group, missing_data):
     percent = df.isnull().sum()/df.isnull().count()*100.0
     total_missing = pd.concat([total, percent], axis=1, keys=['Number', 'Percent'])
 
-    save_dataframe_as_png(total_missing, group + '/total_missing_data_' + group)
+    save_dataframe_as_csv(total_missing, group + '/total_missing_data_' + group)
 
     total_missing = total_missing.loc[['text']]
 
@@ -37,7 +35,7 @@ def missing_data_per_group(df, group):
     percent = (missing_values_per_type / total_values_per_type) * 100
     missing_values = pd.concat([missing_values_per_type, total_values_per_type, percent], axis=1, keys=['Missing Text', 'Total', 'Percent']).fillna(0)
 
-    save_dataframe_as_png(missing_values, group + '/missing_data_' + group)
+    save_dataframe_as_csv(missing_values, group + '/missing_data_' + group)
 
     return missing_values
 
@@ -56,13 +54,13 @@ def plot_missing_data_per_type(df, missing_values, group):
     plt.ylabel('Number of Pages')
     fig.autofmt_xdate()
 
-    fig.savefig(path + group + "/missing_text_per_type_" + group + ".png", dpi=72)
+    fig.savefig(path + group + "/missing_text_per_type_" + group + ".pdf")
 
 def missing_data_all_parties(missing_data):
     total_missing = {'Missing Data': missing_data[0], 'Percentage': missing_data[1]}
     total_missing = pd.DataFrame(total_missing, ['PS', 'PSD', 'CH', 'IL'])
 
-    save_dataframe_as_png(total_missing, 'total_missing_data')
+    save_dataframe_as_csv(total_missing, 'total_missing_data')
 
 def run(group):
     os.makedirs(path + group, exist_ok=True)

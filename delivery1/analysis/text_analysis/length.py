@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-import dataframe_image as dfi
 import calendar
 
 path = "analysis/output/text_analysis/length/"
@@ -9,9 +8,8 @@ def import_refined_data(group):
     df = pd.read_json("data/refined/" + group + '_refined.json')
     return df
 
-def save_dataframe_as_png(df, table_name):
-    df_styled = df.style.background_gradient()
-    dfi.export(df_styled, path + table_name + ".png")
+def save_dataframe_as_csv(df, table_name):
+    df.to_csv(path + table_name + ".csv")
 
 def length_stats_per_month(df):
     group_by_month = df['text'].groupby(by=[df['date'].dt.month])
@@ -46,7 +44,7 @@ def total_length_stats(df):
                 'Max': [df[0]['Max'].max(), df[1]['Max'].max(), df[2]['Max'].max(), df[3]['Max'].max()]}
     total_length = pd.DataFrame(length_data, ['PS', 'PSD', 'CH', 'IL'])
 
-    save_dataframe_as_png(total_length, "total_pages_stats")
+    save_dataframe_as_csv(total_length, "total_pages_stats")
 
 
 def run():

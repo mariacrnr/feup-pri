@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import dataframe_image as dfi
 import calendar
 
 path = "analysis/output/text_analysis/webpages/"
@@ -10,9 +9,8 @@ def import_refined_data(group):
     df = pd.read_json("data/refined/" + group + '_refined.json')
     return df
 
-def save_dataframe_as_png(df, table_name):
-    df_styled = df.style.background_gradient()
-    dfi.export(df_styled, path + table_name + ".png")
+def save_dataframe_as_csv(df, table_name):
+    df.to_csv(path + table_name + ".csv")
 
 def pages_per_month(df):
     group_by_month = df['text'].groupby(by=[df['date'].dt.month])
@@ -48,7 +46,7 @@ def plot_pages_per_month(df):
     plt.xlabel('Months 2017-2022')
     plt.ylabel('Number of Pages')
 
-    fig.savefig(path + "/pages_per_month.png", dpi=72)
+    fig.savefig(path + "/pages_per_month.pdf")
 
 def pages_per_year(df, start, end):
     group_by_year = df['text'].groupby(by=[df['date'].dt.year])
@@ -85,7 +83,7 @@ def plot_pages_per_year(df):
     plt.xlabel('Year')
     plt.ylabel('Number of Pages')
 
-    fig.savefig(path + "/pages_per_year.png", dpi=72)
+    fig.savefig(path + "/pages_per_year.pdf")
 
 def pages_stats(df):
     pages_data = {'Avg Number of Pages': [df[0]['Number of Pages'].mean(), df[1]['Number of Pages'].mean(), df[2]['Number of Pages'].mean(), df[3]['Number of Pages'].mean()],
@@ -93,7 +91,7 @@ def pages_stats(df):
               'Max': [df[0]['Number of Pages'].max(), df[1]['Number of Pages'].max(), df[2]['Number of Pages'].max(), df[3]['Number of Pages'].max()]}
     total_pages = pd.DataFrame(pages_data, ['PS', 'PSD', 'CH', 'IL'])
 
-    save_dataframe_as_png(total_pages, "total_pages_stats")
+    save_dataframe_as_csv(total_pages, "total_pages_stats")
 
 def run():
     political_parties = ['ps_merged', 'psd', 'ch', 'il']
