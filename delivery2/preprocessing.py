@@ -16,9 +16,6 @@ def add_title_field(data):
 
     # replaces '-' dividors with empty space
     data['title'] = data['title'].str.replace('-', ' ')
-
-    # removes file extensions from title
-    data['title'] = data['title'].str.rsplit(pat='.', n=1).str[0]
     
 def change_date_field(data):
     # removes the last backlash from the links that have it
@@ -36,11 +33,11 @@ def run():
     parties = [ 'chega']
 
     for party in parties:
+        print(party)
         data = import_data(party)
         change_date_field(data)
         add_title_field(data)
         add_party_field(party, data)
         save_data(party, data)
         
-
 run()
