@@ -31,5 +31,6 @@ def run():
         add_title_field(data)
         add_party_field(party, data)
         save_data(party, data)
+        
 
 run()

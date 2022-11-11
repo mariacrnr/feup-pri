@@ -1,7 +1,7 @@
 {
 	"add-field-type": [
         {
-            "name":"pageText",
+            "name":"textParameter",
             "class":"solr.TextField",
             "indexAnalyzer":{
                 "tokenizer":{
@@ -28,8 +28,45 @@
     "add-field": [
         {
             "name": "text",
-            "type": "pageText",
+            "type": "textParameter",
             "indexed": true
+        },
+        {
+            "name": "title",
+            "type": "textParameter",
+            "indexed": true
+        },
+        {
+            "name": "link",
+            "type": "string",
+            "indexed": false,
+            "stored": true
+        },
+        {
+            "name": "type",
+            "type": "string",
+            "indexed": true,
+            "stored": true
+        },
+        {
+            "name": "party",
+            "type": "string",
+            "indexed": false,
+            "stored": true
+        },
+        {
+            "name": "contentLength",
+            "type": "int",
+            "indexed": false,
+            "stored": true
+        },
+        {
+            "name": "date",
+            "type": "tdate",
+            "indexed": true,
+            "stored": true
         }
+
     ]
+    
 }
