@@ -2,11 +2,11 @@ import pandas as pd
 import numpy as np
 
 def import_clean_data(group):
-    df = pd.read_json("data/clean/" + group + '_clean.json')
+    df = pd.read_json("data/clean/" + group + '.json')
     return df
 
 def save_refined_data(group, df):
-    df = df.to_json(r'data/refined/'+ group + '_refined.json', orient='records')
+    df = df.to_json(r'data/refined/'+ group + '.json', orient='records')
 
 def remove_empty_text(df):
     df = df.replace(r'^\s*$', np.nan, regex=True)
@@ -19,7 +19,7 @@ def remove_duplicate_text(df):
     return df
 
 def run():
-    political_parties = ['ps_merged', 'psd', 'ch', 'il']
+    political_parties = ['ps', 'psd', 'chega', 'il', 'bloco', 'pcp', 'livre', 'pan', 'pcp'] ['pcp']
 
     for group in political_parties:
         df = import_clean_data(group)

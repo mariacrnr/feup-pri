@@ -5,7 +5,7 @@ def import_raw_data(group):
     return df
 
 def save_cleaned_data(group, df):
-    df = df.to_json(r'data/clean/'+ group + '_clean.json', orient='records')
+    df = df.to_json(r'data/clean/'+ group + '.json', orient='records')
 
 def removing_unrecognized_characters(df):
     df["text"]=pd.Series(df['text'], dtype="string")
@@ -16,7 +16,7 @@ def removing_unrecognized_characters(df):
     return df
 
 def run():
-    political_parties = ['ps_merged', 'psd', 'ch', 'il']
+    political_parties = ['ps', 'psd', 'chega', 'il', 'bloco', 'pcp', 'livre', 'pan', 'pcp']
 
     for group in political_parties:
         df = import_raw_data(group)
