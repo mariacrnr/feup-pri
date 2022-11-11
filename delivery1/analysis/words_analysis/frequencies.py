@@ -73,7 +73,7 @@ def plot_pie_chart(groups, data, partie):
     # Creating autocpt arguments
     def func(pct, allvalues):
         absolute = int(pct / 100.*np.sum(allvalues))
-        return "{:.1f}%\n({:d} g)".format(pct, absolute)
+        return "{:.1f}%\n({:d})".format(pct, absolute)
     
     # Creating plot
     fig, ax = plt.subplots(figsize =(10, 7))
@@ -93,9 +93,9 @@ def plot_pie_chart(groups, data, partie):
             loc ="center left",
             bbox_to_anchor =(1, 0, 0.5, 1))
     
-    plt.setp(autotexts, size = 6, weight ="bold")
+    plt.setp(autotexts, size = 12, weight ="bold")
     
-    plt.savefig(path + "/mentions_of_other_parties_" + partie + ".png", dpi=72)
+    plt.savefig(path + "/mentions_of_other_parties_" + partie + ".pdf")
     
 
 def run():

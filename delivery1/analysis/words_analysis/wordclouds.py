@@ -25,12 +25,15 @@ def wordcloud_setup(df):
 
 
 def plot_wordcloud(df_without_stopwords, group):
-    wordcloud = WordCloud(width=800, height=400,collocations=False).generate(df_without_stopwords)
-
-    plt.figure( figsize=(20,10) )
+    wordcloud = WordCloud(background_color="white", width=800, height=700,collocations=False).generate(df_without_stopwords)
+    svg_file=wordcloud.to_svg()
+    f = open(path + "/wordcloud_" + group + ".svg",'w')
+    f.write(svg_file)
+    f.close()
+    plt.figure( figsize=(20.0*8.0/7.0,20.0) )
     plt.imshow(wordcloud)
     plt.axis('off')
-    plt.savefig(path + "/wordcloud_" + group + ".png", dpi=72)
+    # plt.savefig(path + "/wordcloud_" + group + ".pdf")
 
 def run():
     political_parties = ['ps_merged', 'psd', 'ch', 'il']
