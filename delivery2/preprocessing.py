@@ -14,9 +14,6 @@ def add_title_field(data):
     # replaces '-' dividors with empty space
     data['title'] = data['title'].str.replace('-', ' ')
 
-    # removes file extensions from title
-    data['title'] = data['title'].str.rsplit(pat='.', n=1).str[0]
-
 def add_party_field(party, data):
     data['party'] = party.upper()
 
@@ -27,10 +24,10 @@ def run():
     parties = ['ps', 'psd', 'chega', 'pcp', 'bloco', 'il', 'pan', 'livre']
 
     for party in parties:
+        print(party)
         data = import_data(party)
         add_title_field(data)
         add_party_field(party, data)
         save_data(party, data)
         
-
 run()

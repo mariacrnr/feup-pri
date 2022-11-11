@@ -3,6 +3,12 @@
         {
             "name":"textParameter",
             "class":"solr.TextField",
+            "large": true,
+            "stored": true,
+            "multiValued": false,
+            "charFilters":[
+                {"class":"solr.HTMLStripCharFilterFactory"}
+            ],
             "indexAnalyzer":{
                 "tokenizer":{
                     "class":"solr.StandardTokenizerFactory"
@@ -20,9 +26,22 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.StopFilterFactory", "words":"stopwords.txt", "ignoreCase":true, "preserveOriginal": true},
                     {"class":"solr.PortugueseStemFilterFactory","preserveOriginal":true}
                 ]
             }
+        },
+        {
+            "name": "dateParameter",
+            "class": "solr.DatePointField"
+        },
+        {
+            "name": "intParameter",
+            "class": "solr.IntPointField"
+        },
+        {
+            "name": "strParameter",
+            "class": "solr.StrPointField"
         }
     ],
     "add-field": [
@@ -38,31 +57,31 @@
         },
         {
             "name": "link",
-            "type": "string",
+            "type": "strParameter",
             "indexed": false,
             "stored": true
         },
         {
             "name": "type",
-            "type": "string",
+            "type": "strParameter",
             "indexed": true,
             "stored": true
         },
         {
             "name": "party",
-            "type": "string",
+            "type": "strParameter",
             "indexed": false,
             "stored": true
         },
         {
             "name": "contentLength",
-            "type": "int",
+            "type": "intParameter",
             "indexed": false,
             "stored": true
         },
         {
             "name": "date",
-            "type": "tdate",
+            "type": "dateParameter",
             "indexed": true,
             "stored": true
         }
