@@ -1,12 +1,20 @@
 FROM solr:8.10
 
-COPY data/ps_merged_refined.json /data/ps_merged_refined.json
+COPY data/ps.json /data/ps.json
 
-COPY data/ch_refined.json /data/ch_refined.json
+COPY data/chega.json /data/chega.json
 
-COPY data/il_refined.json /data/il_refined.json
+COPY data/il.json /data/il.json
 
-COPY data/psd_refined.json /data/psd_refined.json
+COPY data/psd.json /data/psd.json
+
+COPY data/pcp.json /data/pcp.json
+
+COPY data/pan.json /data/pan.json
+
+COPY data/livre.json /data/livre.json
+
+COPY data/bloco.json /data/bloco.json
 
 COPY simple_schema.json /data/simple_schema.json
 
