@@ -35,7 +35,7 @@ def create_random_sample():
     final_data=pd.DataFrame()
     for party in parties:
         data = import_data(party)
-        final_data = pd.concat([final_data, data.sample(n=30,random_state=0)], ignore_index=True)
+        final_data = pd.concat([final_data, data.sample(n=200,random_state=0)], ignore_index=True)
         del data
     save_data('sample', final_data)
     
@@ -54,5 +54,6 @@ def run():
         add_party_field(party, data)
         save_data(party, data)
         del data 
+               
                
 create_random_sample()

@@ -6,9 +6,7 @@
             "large": true,
             "stored": true,
             "multiValued": false,
-            "charFilters":[
-                {"class":"solr.HTMLStripCharFilterFactory"}
-            ],
+            "charFilters":{"class":"solr.HTMLStripCharFilterFactory"},
             "indexAnalyzer":{
                 "tokenizer":{
                     "class":"solr.StandardTokenizerFactory"
@@ -16,7 +14,7 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
-                    {"class":"solr.PortugueseStemFilterFactory","preserveOriginal":true}
+                    {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             },
             "queryAnalyzer":{
@@ -26,8 +24,8 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
-                    {"class":"solr.StopFilterFactory", "words":"stopwords.txt", "ignoreCase":true, "preserveOriginal": true},
-                    {"class":"solr.PortugueseStemFilterFactory","preserveOriginal":true}
+                    {"class":"solr.StopFilterFactory", "words":"stopwords.txt", "ignoreCase":true},
+                    {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             }
         },
@@ -41,7 +39,7 @@
         },
         {
             "name": "strParameter",
-            "class": "solr.StrPointField"
+            "class": "solr.StrField"
         }
     ],
     "add-field": [
@@ -70,7 +68,7 @@
         {
             "name": "party",
             "type": "strParameter",
-            "indexed": false,
+            "indexed": true,
             "stored": true
         },
         {
