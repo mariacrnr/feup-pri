@@ -28,9 +28,23 @@ def add_party_field(party, data):
 
 def save_data(group, df):
     df = df.to_json(r'data/'+ group + '.json', orient='records')
+    
+def create_random_sample():
+    parties = ['bloco','chega','il','livre','pan','pcp','ps','psd']
+
+    final_data=pd.DataFrame()
+    for party in parties:
+        data = import_data(party)
+        final_data = pd.concat([final_data, data.sample(n=30,random_state=0)], ignore_index=True)
+        del data
+    save_data('sample', final_data)
+    
+         
+        
+        
 
 def run():
-    parties = [ 'chega']
+    parties = ['bloco','chega','il','livre','pan','pcp','ps','psd']
 
     for party in parties:
         print(party)
@@ -39,5 +53,6 @@ def run():
         add_title_field(data)
         add_party_field(party, data)
         save_data(party, data)
-        
-run()
+        del data 
+               
+create_random_sample()
