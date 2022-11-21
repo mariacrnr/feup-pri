@@ -1,0 +1,88 @@
+{
+	"add-field-type": [
+        {
+            "name":"textParameter",
+            "class":"solr.TextField",
+            "large": true,
+            "stored": true,
+            "multiValued": false,
+            "charFilters":{"class":"solr.HTMLStripCharFilterFactory"},
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.PortugueseStemFilterFactory"}
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.PortugueseStemFilterFactory"}
+                ]
+            }
+        },
+        {
+            "name": "dateParameter",
+            "class": "solr.DatePointField"
+        },
+        {
+            "name": "intParameter",
+            "class": "solr.IntPointField"
+        },
+        {
+            "name": "strParameter",
+            "class": "solr.StrField"
+        }
+    ],
+    "add-field": [
+        {
+            "name": "text",
+            "type": "textParameter",
+            "indexed": true
+        },
+        {
+            "name": "title",
+            "type": "textParameter",
+            "indexed": true
+        },
+        {
+            "name": "link",
+            "type": "strParameter",
+            "indexed": false,
+            "stored": true
+        },
+        {
+            "name": "type",
+            "type": "strParameter",
+            "indexed": true,
+            "stored": true
+        },
+        {
+            "name": "party",
+            "type": "strParameter",
+            "indexed": true,
+            "stored": true
+        },
+        {
+            "name": "contentLength",
+            "type": "intParameter",
+            "indexed": false,
+            "stored": true
+        },
+        {
+            "name": "date",
+            "type": "dateParameter",
+            "indexed": true,
+            "stored": true
+        }
+
+    ]
+    
+}
