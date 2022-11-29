@@ -10,7 +10,7 @@ def number_of_days_in_month(year:int, month:int):
 
 def retrieve_data(start_year, end_year, website, output_file_name):
 
-    f = open("data/raw/" + output_file_name + ".json", "w",encoding="UTF-8")
+    f = open("raw/" + output_file_name + ".json", "w",encoding="UTF-8")
     f.write("[\n")
 
     request_counter=0
@@ -64,7 +64,7 @@ def retrieve_data(start_year, end_year, website, output_file_name):
                     request_counter+=1
 
                 text = next_request.content.decode("UTF-8",'replace')
-                json.dump({"date": data["response_items"][k]["date"], "link": data["response_items"][k]["linkToArchive"], "contentLength": len(text),"type":data["response_items"][k]["mimeType"] ,"text": text}, fp=f,indent=4, ensure_ascii=False)
+                json.dump({"date": data["response_items"][k]["date"], "link": data["response_items"][k]["linkToArchive"], "contentLength": len(text),"type":data["response_items"][k]["mimeType"], "title": data["response_items"][k]["title"], "text": text}, fp=f,indent=4, ensure_ascii=False)
                 
     f.write("\n]")
 
@@ -78,4 +78,4 @@ def run():
         retrieve_data(start_year, end_year, group_links[group], group)
             
 # run()            
-retrieve_data(2017,2023,"www.ps.pt", "ps")
+retrieve_data(2019,2023,"partidochega.pt", "chega")
