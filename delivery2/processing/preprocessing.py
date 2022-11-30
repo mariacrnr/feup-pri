@@ -4,7 +4,7 @@ import json
 import numpy as np
 
 def import_data(group):
-    df = pd.read_json("data/" + group + '.json')
+    df = pd.read_json("../data/" + group + '.json')
     df['date']=df['date'].astype(np.int64) // 10**9
     change_date_field(df)
     return df
@@ -33,7 +33,7 @@ def save_data(group, df):
     
 def create_sample():
     parties = ['bloco','chega','il','livre','pan','pcp','ps','psd']
-    extras= pd.read_json('data/sample_extras.json', orient='records')
+    extras= pd.read_json('../data/sample_extras.json', orient='records')
     
     final_data=pd.DataFrame()
     for party in parties:
