@@ -24,7 +24,6 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
-                    {"class":"solr.StopFilterFactory", "words":"lang/stopwords_pt.txt"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             }
