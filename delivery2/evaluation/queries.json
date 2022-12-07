@@ -1,0 +1,136 @@
+[
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=grupo parlamentar&qf=title text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:PSD&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=grupo parlamentar&qf=title^5 text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:PSD&rows=30",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20190710174005/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20191119230506/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20190710174005/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20191119230506/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ]         
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=candidato presidencial&qf=title text&fq=date:[2015-01-01T00:00:00Z TO 2016-02-01T23:59:59Z]&fq=party:BLOCO&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=candidato presidencial&ps=100&qf=title^5 text&fq=date:[2015-01-01T00:00:00Z TO 2016-02-01T23:59:59Z]&fq=party:BLOCO&rows=30",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20160121123250/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151201103005/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151112125221/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151110105408/http://www.bloco.org/content/view/3079/1/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20160121123250/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151201103005/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151112125221/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151110105408/http://www.bloco.org/content/view/3079/1/"
+        ]             
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=programa eleitoral legislativas&qf=title text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:IL&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=programa^6 eleitoral legislativas^5&qf=title^5 text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:IL&rows=30",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20191206164431/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190830210309/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190105015837/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190112040556/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190116121149/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190117112228/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190320191327/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190522134023/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190606144449/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190818004811/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190915233252/https://iniciativaliberal.pt/wp-content/uploads/2019/09/compromisso-eleitoral-iniciativa-liberal.pdf"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20191206164431/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190830210309/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190105015837/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190112040556/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190116121149/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190117112228/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190320191327/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190522134023/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190606144449/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190818004811/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190915233252/https://iniciativaliberal.pt/wp-content/uploads/2019/09/compromisso-eleitoral-iniciativa-liberal.pdf"
+        ]               
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=aborto&qf=title text&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=aborto&qf=title^10 text&rows=30",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20151005143653/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151110135413/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151201132715/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160204161238/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160620192845/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170210202417/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170802172433/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20171210113124/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20180428040152/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160225224529/http://pcp.pt/tags/aborto?page=1",
+            "https://arquivo.pt/wayback/20160225224554/http://pcp.pt/tags/aborto?page=2",
+            "https://arquivo.pt/wayback/20160225224606/http://pcp.pt/tags/aborto?page=3",
+            "https://arquivo.pt/wayback/20160225224619/http://pcp.pt/tags/aborto?page=4",
+            "https://arquivo.pt/wayback/20200407072137/http://pcp.pt/actpol/temas/ivg/folheto-aborto-clandestino.pdf",
+            "https://arquivo.pt/wayback/20041224102351/http://www.bloco.org/popups/newswindow.php?id=554&print=print",
+            "https://arquivo.pt/wayback/20041224102453/http://www.bloco.org/popups/newswindow.php?id=555&print=print",
+            "https://arquivo.pt/wayback/20050128065049/http://www.bloco.org/index.php?option=news&task=viewarticle&sid=555&Itemid=2",
+            "https://arquivo.pt/wayback/20040324093852/http://pcp.pt/actpol/temas/mulheres/direitos-sexuais-reprodutivos/pcp.htm",
+            "https://arquivo.pt/wayback/20070617073805/http://pcp.pt/publica/militant/280/p28.html",
+            "https://arquivo.pt/wayback/20021223054932/http://www.pcp.pt/actpol/temas/ivg/folheto.html",
+            "https://arquivo.pt/wayback/20030821062133/http://pcp.pt/actpol/temas/ivg/folheto.html",
+            "https://arquivo.pt/wayback/20090705200205/http://www.pcp.pt/actpol/temas/ivg/no20040602.htm",
+            "https://arquivo.pt/wayback/20110708082055/http://www.pcp.pt/actpol/temas/ivg/no20050627.htm",
+            "https://arquivo.pt/wayback/20031122104714/http://www.pcp.pt/avante/1229/2903h2.html",
+            "https://arquivo.pt/wayback/20070222152617/http://www.pcp.pt/index.php?option=com_content&task=view&id=6938&Itemid=197",
+            "https://arquivo.pt/wayback/20131107171543/http://www.ps.pt/images/arquivo_accaosocialista/html/1997/916_20_02_1997/aborto.htm",
+            "https://arquivo.pt/wayback/20110522132303/http://pcp.pt/%C2%ABsim-%C3%A0-despenaliza%C3%A7%C3%A3o-fim-do-aborto-clandestino-e-dos-julgamentos%C2%BB-odete-santos-deputada-pcp-na-ar"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20151005143653/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151110135413/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151201132715/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160204161238/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160620192845/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170210202417/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170802172433/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20171210113124/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20180428040152/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160225224529/http://pcp.pt/tags/aborto?page=1",
+            "https://arquivo.pt/wayback/20160225224554/http://pcp.pt/tags/aborto?page=2",
+            "https://arquivo.pt/wayback/20160225224606/http://pcp.pt/tags/aborto?page=3",
+            "https://arquivo.pt/wayback/20160225224619/http://pcp.pt/tags/aborto?page=4",
+            "https://arquivo.pt/wayback/20200407072137/http://pcp.pt/actpol/temas/ivg/folheto-aborto-clandestino.pdf",
+            "https://arquivo.pt/wayback/20180406202705/http://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20181101192733/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20190325193324/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20190523010119/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20190606181226/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20190710173544/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20191014182900/https://www.bloco.org/not%C3%ADcias/atualidade/item/55-aborto-s%C3%B3crates-quer-novo-adiamento.html",
+            "https://arquivo.pt/wayback/20191218090404/http://www.pcp.pt/sobre-decisao-de-nao-convocacao-do-referendo-sobre-aborto",
+            "https://arquivo.pt/wayback/20190711033019/http://www.pcp.pt/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20151110191623/http://www.pcp.pt/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20190905173609/http://pcp.pt/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20191220051907/http://www.pcp.pt:2082/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20200327083946/http://@pcp.pt/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20200911214123/http://@pcp.pt/aborto-clandestino-existe-urgente-mudar-lei-11-de-fevereiro-preciso-votar-sim",
+            "https://arquivo.pt/wayback/20100809021614/http://www.pcp.pt/aborto-clandestino-e-julgamento-de-mulheres-o-esc%C3%A2ndalo-continua-francisco-lopes-em-httpwwwsetubalna"
+        ]            
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=eutanásia&qf=title text&fq=party:PS&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=eutanásia&qf=title^10 text&fq=party:PS&rows=30",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20180728044643/http://ps.pt/index.php/2018/05/29/ps-garante-respeito-pela-vontade-do-doente-que-pede-para-morrer/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20180728044643/http://ps.pt/index.php/2018/05/29/ps-garante-respeito-pela-vontade-do-doente-que-pede-para-morrer/"
+        ]       
+    }
+]

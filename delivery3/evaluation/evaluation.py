@@ -6,15 +6,15 @@ import json
 
 def evaluate(system,query_type,indexed):
 
-    queries = pd.read_json('data/queries.json')
+    queries = pd.read_json('queries.json')
     results=[]
     mean_avg_precision=[]
     graphs_data=[]
     for i in range(5):
-        url = queries.iloc[i][query_type]
-        relevant_documents=queries.iloc[i]['links']
+        url = queries.iloc[i][query_type+'_query']
+        relevant_documents=queries.iloc[i][query_type+'_links']
         response=requests.get(url).json()['response']
-        retrieved_documents=response['numFound']
+        retrieved_documents=response['numFound'] if response['numFound']<30 else 30
         if(retrieved_documents>0):
             response_df = pd.json_normalize(response['docs'])
             relevant_documents_retrieved=0
@@ -30,11 +30,12 @@ def evaluate(system,query_type,indexed):
                     relevant_documents_retrieved_10+=1
                 
                 
-            for k in range(retrieved_documents):
-                if(indexed):
-                    link=response_df['link'][k]
-                else:
-                    link=response_df['link'][k][0]
+            for k in range(len(response_df)):
+                # if(indexed):
+                #     link=response_df.iloc[k]['link']
+                # else:
+                #     link=response_df['link'][k][0]
+                link=response_df.iloc[k]['link']
                 if(link in relevant_documents):
                     if(k==0):
                         positions[k]=1
@@ -94,14 +95,14 @@ def evaluate(system,query_type,indexed):
     
     mean_avg_precision=sum(mean_avg_precision)/5
     results.append({'mean_avg_precision':mean_avg_precision})
-    with open('evaluation_output/'+system+'/'+query_type+'_'+str(i+1)+'.json', 'w') as fp:
+    with open('evaluation_output/'+system+'/'+query_type+'.json', 'w') as fp:
         json.dump(results, fp)
     
     
 def run():
     print("Simple Query:")
-    evaluate('system_1','simple_query',False)
+    evaluate('system_2','simple',True)
     print("Complex Query:")
-    evaluate('system_1','complex_query',False)
+    evaluate('system_2','complex',True)
     
 run()

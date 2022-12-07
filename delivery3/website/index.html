@@ -6,18 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Partidos Politicos</title>
     <link href="style.css" rel="stylesheet">
+    <script src="index.js" defer></script>
 </head>
 <body>
     <div id="main-container">
         <h2 id="main-title">Partidos Politicos</h2>
         <form action="">
-            <div id="search-bar-group">
-                <input type="text" placeholder="Search here...">
-                <img src="images/search-svgrepo-com.svg" alt="">
+            <div id="search-input-group">
+                <div id="search-bar-group">
+                    <input id="search-input" type="text" placeholder="Search here...">
+                    <img src="images/search-svgrepo-com.svg" alt="">
+                </div>
+                <div id="search-filters-group">
+                    <div id="party-filter-group">
+                        <h5>Filter by party:</h5>
+                        <select name="parties" id="party-filter">
+                            <option value="">All</option>
+                            <option value="BE">Bloco de Esquerda</option>
+                            <option value="CH">Chega</option>
+                            <option value="IL">Iniciativa Liberal</option>
+                            <option value="L">Livre</option>
+                            <option value="PAN">PAN</option>
+                            <option value="PCP">Partido Comunista Português</option>
+                            <option value="PS">Partido Socialista</option>
+                            <option value="PSD">Partido Social Democrata</option>
+                        </select>
+                    </div>
+                    <div id="date-filter-group">
+                        <h5>Filter by date:</h5>
+
+                        <div id="date-filter">
+                            <input type="date" id="start-date-filter">
+                            <h5>-</h5>
+                            <input type="date" id="end-date-filter">
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="search-buttons-group">
-                <button><h3>Random Query</h3></button>
-                <button><h3>Search</h3></button>
+                <button id="random-query"><h3>Random Query</h3></button>
+                <button id="search-button"><h3>Search</h3></button>
             </div>
         </form>
     </div>
