@@ -4,6 +4,10 @@ body{
     margin: 0;
 }
 
+#text{
+    width: inherit;
+}
+
 a{
     text-decoration: none;
     color: black;
@@ -243,7 +247,7 @@ a{
 }
 
 #results-area{
-    width: 89%;
+    width: 88%;
     display: flex;
     flex-direction: column;
     margin-left: 12%;
@@ -252,6 +256,10 @@ a{
 #results-area h5{
     margin-top: 10px;
     font-weight: 100;
+}
+
+#results-time {
+    margin-bottom: 10px;
 }
 
 #search-results{
@@ -267,7 +275,7 @@ a{
 }
 
 .search-result-item a{
-    width: fit-content;
+    width: 80%;
     margin:0;
     text-decoration: none;
     color: black;
@@ -276,13 +284,23 @@ a{
 
 .search-result-item h5,p{
     margin:0;
+
+}
+
+.search-result-item p{
+    font-size: 0.9em;
 }
 
 .search-result-item h2{
     display: inline-block;
-
-    margin-top:5px;
+    margin-top:0;
     margin-bottom:8px
+
+}
+
+.search-result-item h5{
+    text-overflow: clip;
+    white-space: nowrap;
 
 }
 
@@ -298,4 +316,9 @@ a{
 
 #next-page-selection h4{
     margin-right: 1em;
+}
+
+em{
+    font-style: normal;
+    font-weight: bold;
 }
