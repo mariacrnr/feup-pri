@@ -1,9 +1,12 @@
 delivery1/data/
 delivery2/data/
 delivery3/data/
+delivery2/solr/data/
 delivery3/solr/data/
 .ipynb_checkpoints
 delivery1/analysis/output
 delivery1/analysis/data_exploration.pdf
 delivery1/processing/data_preparation.pdf
 delivery1/collection/raw/
+delivery3/website/backend/node_modules
+delivery3/website/backend/package-lock.json

@@ -24,10 +24,10 @@
                             <h5>Filter by party:</h5>
                             <select name="parties" id="party-filter">
                                 <option value="">All</option>
-                                <option value="BE">Bloco de Esquerda</option>
-                                <option value="CH">Chega</option>
+                                <option value="BLOCO">Bloco de Esquerda</option>
+                                <option value="CHEGA">Chega</option>
                                 <option value="IL">Iniciativa Liberal</option>
-                                <option value="L">Livre</option>
+                                <option value="LIVRE">Livre</option>
                                 <option value="PAN">PAN</option>
                                 <option value="PCP">Partido Comunista Português</option>
                                 <option value="PS">Partido Socialista</option>
@@ -49,30 +49,16 @@
             </form>
         </div>
         <div id="results-area">
-            <h5>About 945,000,000 results (0.34 seconds)</h5>
+            <h5 id="results-time"></h5>
             <div id="search-results">
-                <div class="search-result-item">
-                    <a href=""><h5>https://mail.google.com/mail/u/0/#inbox</h5></a>
-                    <a class="result-title"><h2>Search Result - This must be relevant</h2></a>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et fugiat dicta id qui repellendus dolor alias asperiores sapiente, voluptates nihil necessitatibus rem illum officia molestias est similique. Autem, facilis quo.</p>
-                </div>
-                <div class="search-result-item">
-                    <a href=""><h5>https://mail.google.com/mail/u/0/#inbox</h5></a>
-                    <a class="result-title"><h2>Search Result - This must be relevant</h2></a>
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Et fugiat dicta id qui repellendus dolor alias asperiores sapiente, voluptates nihil necessitatibus rem illum officia molestias est similique. Autem, facilis quo.</p>
-                </div>
             </div>
             <div id="next-page-selection">
-                <a href=""><h4>Previous Page</h4></a>
-                <a href=""><h4>1</h4></a>
-                <a href=""><h4>2</h4></a>
-                <a href=""><h4>3</h4></a>
-                <a href=""><h4>4</h4></a>
-                <a href=""><h4>5</h4></a>
-                <h4>...</h4>
-                <a href=""><h4>Next Page</h4></a>
+                <a href="" id="previous-page-button"><h4>Previous Page</h4></a>
+                <h4 id="page-selector-sep">|</h4>
+                <a href="" id="next-page-button"><h4>Next Page</h4></a>
             </div>
         </div>
     </div>
 </body>
+<footer></footer>
 </html>

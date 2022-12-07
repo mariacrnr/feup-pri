@@ -42,17 +42,17 @@ def add_title_field(data):
     
 
 def import_data(group):
-    df = pd.read_json("../data/" + group + '.json')
+    df = pd.read_json("../solr/data/" + group + '.json')
     return df
 
 def save_data(group, df):
     json_data=df.to_json(orient='records')
     parsed = json.loads(json_data)
-    f = open('../data/after_processing/'+ group + '.json', "w",encoding="UTF-8")
+    f = open('../solr/data/after_processing/'+ group + '.json', "w",encoding="UTF-8")
     json.dump(parsed, fp=f,indent=4, ensure_ascii=False)
 
 def run():
-    parties = ['il']
+    parties = ['bloco']
 
     for party in parties:
         print(party)
