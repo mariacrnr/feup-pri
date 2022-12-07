@@ -12,21 +12,38 @@ partyInput.value=urlParams.get('party')==undefined ? '' : urlParams.get('party')
 dateFromInput.value=urlParams.get('from');
 dateToInput.value=urlParams.get('to');
 const start= urlParams.get('start');
-console.log(dateFromInput.value)
 
 
-searchButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    const searchInputValue = searchInput.value;
-    const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
-    const dateFromInputValue = dateFromInput.value;
-    const dateToInputValue = dateToInput.value;
-    const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
-    const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
-    const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
+function setUpEventListeners(){
 
-    window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
-});
+    searchButton.addEventListener('click', (event) => {
+        event.preventDefault();
+        const searchInputValue = searchInput.value;
+        const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+        const dateFromInputValue = dateFromInput.value;
+        const dateToInputValue = dateToInput.value;
+        const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
+        const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
+        const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
+    
+        window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+    });
+
+    let optionButtons = document.getElementsByClassName('options-button');
+    console.log(optionButtons.length)
+    for (let index = 0; index < optionButtons.length; index++) {
+        const optionButton = optionButtons[index];
+
+        optionButton.addEventListener('click',(event)=>{
+            let hiddenMenu = event.target.parentElement.getElementsByClassName('relevant-menu-hidden')[0]
+            console.log(hiddenMenu.style.display)
+            hiddenMenu.style.display= (hiddenMenu.style.display=='' || hiddenMenu.style.display=='none') ? 'flex' : 'none'
+        })
+    }
+
+}
+
+
 
 async function requestSolr(query){
     const baseRequestUrl="http://localhost:3000/?";
@@ -50,16 +67,44 @@ async function requestSolr(query){
 	return response;
 }
 
-function createSearchResult(title,highlight,link){
+function createSearchResult(id,title,highlight,link){
     let searchResultsContainer = document.getElementById('search-results');
 
     let outerDiv=document.createElement('div');
     outerDiv.setAttribute('class','search-result-item');
     let linkH5=document.createElement('h5')
     linkH5.textContent=link.substring(0,(link.length<80 ? link.length : 80))+'...'
+
+    let divLinkOptions=document.createElement('div')
+    divLinkOptions.setAttribute('class','link-and-options')
+
     let linkA=document.createElement('a')
     linkA.setAttribute('href',link)
     linkA.append(linkH5)
+    
+    let divRelevantMenu=document.createElement('div')
+    divRelevantMenu.setAttribute('class','relevant-menu')
+
+    let optionsIcon=document.createElement('img')
+    optionsIcon.setAttribute('src','/images/options.svg')
+    optionsIcon.setAttribute('class','options-button')
+    optionsIcon.setAttribute('id',id)
+
+
+    let divRelevantMenuHidden=document.createElement('div')
+    divRelevantMenuHidden.setAttribute('class','relevant-menu-hidden')
+    let relevantMenuH4=document.createElement('h4')
+    relevantMenuH4.textContent="This result isn't relevant"
+    divRelevantMenuHidden.append(relevantMenuH4)
+
+    
+    divRelevantMenu.append(optionsIcon)
+    divRelevantMenu.append(divRelevantMenuHidden)
+
+    divLinkOptions.append(linkA)
+    divLinkOptions.append(divRelevantMenu)
+
+
     let resultTitleA=document.createElement('a')
     resultTitleA.setAttribute('href',link)
     let resultTitleH2=document.createElement('h2')
@@ -68,11 +113,12 @@ function createSearchResult(title,highlight,link){
     let highlightP=document.createElement('p')
     highlightP.innerHTML=highlight
     
-    outerDiv.append(linkA)
+    outerDiv.append(divLinkOptions)
     outerDiv.append(resultTitleA)
     outerDiv.append(highlightP)
 
     searchResultsContainer.appendChild(outerDiv)
+
 }
 
 function parseResults(resultsJson){
@@ -94,8 +140,9 @@ function parseResults(resultsJson){
         }
         highlighted=highlighted.substring(0,(highlighted.length<400 ? highlighted.length : 400)) + '...'
         let link = result['link']
+        let id=result['id']
 
-		createSearchResult(result['title'],highlighted,link)
+		createSearchResult(id,result['title'],highlighted,link)
 	});
 
 
@@ -120,11 +167,15 @@ function parseResults(resultsJson){
         newStartValue=parseInt(start)-10
         previousPage.setAttribute('href',start==10 ? previousURL : previousURL+'&start='+newStartValue)
     }
+    return true
 
 }
 
+
 requestSolr(searchInput.value).then(resultsJson=>{
-	parseResults(resultsJson)
+	if(parseResults(resultsJson))
+        setUpEventListeners()
+
 })
 
 

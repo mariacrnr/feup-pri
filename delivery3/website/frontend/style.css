@@ -113,6 +113,7 @@ a{
     margin:0;
     margin-bottom: 0.5em;
     font-weight: 100;
+    user-select: none;
 }
 
 #party-filter{
@@ -254,8 +255,13 @@ a{
 }
 
 #results-area h5{
-    margin-top: 10px;
+    margin: 0;
     font-weight: 100;
+}
+
+#results-area>h5{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 #results-time {
@@ -274,8 +280,46 @@ a{
     margin-bottom: 1em;
 }
 
+.link-and-options{
+    margin-top: 10px;
+    margin-bottom: 0;
+    display: flex;
+    justify-content: space-between;
+
+}
+
+.relevant-menu{
+    margin-right: 5%;
+}
+
+.relevant-menu-hidden h4{
+    padding: 0.5em;
+    padding-right: 0.6em;
+    margin: 0;
+    font-weight: 300;
+    font-size: 0.9em;
+}
+
+.relevant-menu img{
+    height: 1.3em;
+    width: 1.3em;
+    cursor: pointer;
+}
+
+.relevant-menu-hidden{
+    display: none;
+    background-color: white;
+    border: 1px solid rgb(51, 51, 51);
+    position: absolute;
+    margin-left: 0.65em;
+    margin-top: 0.2em;
+    border-radius: 0px 5px 5px 5px;
+    cursor: pointer;
+    user-select: none;
+ }
+
 .search-result-item a{
-    width: 80%;
+    width: 90%;
     margin:0;
     text-decoration: none;
     color: black;
