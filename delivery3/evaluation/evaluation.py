@@ -6,7 +6,7 @@ import json
 
 def evaluate(system,query_type,indexed):
 
-    queries = pd.read_json('queries.json')
+    queries = pd.read_json('titles.json')
     results=[]
     mean_avg_precision=[]
     graphs_data=[]
@@ -26,16 +26,15 @@ def evaluate(system,query_type,indexed):
             for relevant_document in relevant_documents:
                 if(response_df['link'].str.contains(relevant_document,regex=False).any()):
                     relevant_documents_retrieved+=1
-                if(response_df['link'][0:10].str.contains(relevant_document,regex=False).any()):
+                if(response_df['link'][0:(len(relevant_documents) if len(relevant_documents)<10 else 10)].str.contains(relevant_document,regex=False).any()):
                     relevant_documents_retrieved_10+=1
                 
                 
             for k in range(len(response_df)):
-                # if(indexed):
-                #     link=response_df.iloc[k]['link']
-                # else:
-                #     link=response_df['link'][k][0]
-                link=response_df.iloc[k]['link']
+                if(indexed):
+                    link=response_df.iloc[k]['link']
+                else:
+                    link=response_df.iloc[k]['link'][0]
                 if(link in relevant_documents):
                     if(k==0):
                         positions[k]=1
@@ -53,21 +52,21 @@ def evaluate(system,query_type,indexed):
             for k in range(retrieved_documents):
                 precision_list[k]=positions[k]/(k+1)
                 
-            avg_precision=relevant[0:10].count(1) if relevant[0:10].count(1)==0 else sum(map(lambda x,y:x*y,precision_list[0:10],relevant[0:10]))/relevant[0:10].count(1)
+            avg_precision=0 if relevant[0:10].count(1)==0 else sum(map(lambda x,y:x*y,precision_list[0:10],relevant[0:10]))/relevant[0:10].count(1)
 
             
             graphs_data.append([recall_list[0:10],precision_list[0:10],"Query"+str(i+1)])
             
             # plt.show()
             
-            precision_10=relevant_documents_retrieved_10/10
+            precision_10=relevant_documents_retrieved_10/(len(relevant_documents) if len(relevant_documents)<10 else 10)
             precision=relevant_document if relevant_document==0 else relevant_documents_retrieved/retrieved_documents
             recall=relevant_documents_retrieved/len(relevant_documents)
             f_measure=(precision+recall) if (precision+recall)==0 else 2*precision*recall/(precision+recall)
             
             print("Query "+str(i+1) +" :")
             print("\tPrecision: "+str(precision))
-            print("\tP@10: "+str(precision_10))
+            print("\tP@"+str((len(relevant_documents) if len(relevant_documents)<10 else 10))+": "+str(precision_10))
             print("\tAvg Precision: "+str(avg_precision))
 
             print("\tF Measure: "+str(f_measure))
@@ -101,8 +100,8 @@ def evaluate(system,query_type,indexed):
     
 def run():
     print("Simple Query:")
-    evaluate('system_2','simple',True)
+    evaluate('system_1','simple',False)
     print("Complex Query:")
-    evaluate('system_2','complex',True)
+    evaluate('system_1','complex',False)
     
 run()
