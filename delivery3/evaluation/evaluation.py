@@ -28,8 +28,8 @@ def evaluate(system,query_type,indexed):
                     relevant_documents_retrieved+=1
                 if(response_df['link'][0:(len(relevant_documents) if len(relevant_documents)<10 else 10)].str.contains(relevant_document,regex=False).any()):
                     relevant_documents_retrieved_10+=1
-                
-                
+
+                    
             for k in range(len(response_df)):
                 if(indexed):
                     link=response_df.iloc[k]['link']
@@ -100,8 +100,8 @@ def evaluate(system,query_type,indexed):
     
 def run():
     print("Simple Query:")
-    evaluate('system_1','simple',False)
+    evaluate('system_1','simple', True)
     print("Complex Query:")
-    evaluate('system_1','complex',False)
+    evaluate('system_1','complex', True)
     
 run()
