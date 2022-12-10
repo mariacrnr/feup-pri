@@ -6,8 +6,8 @@
             "large": true,
             "stored": true,
             "multiValued": false,
-            "charFilters":{"class":"solr.HTMLStripCharFilterFactory"},
             "indexAnalyzer":{
+                "charFilter":{"class":"solr.HTMLStripCharFilterFactory"},
                 "tokenizer":{
                     "class":"solr.StandardTokenizerFactory"
                 },

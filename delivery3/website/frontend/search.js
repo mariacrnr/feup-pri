@@ -7,6 +7,7 @@ const partyInput = document.getElementById('party-filter');
 const dateFromInput = document.getElementById('start-date-filter');
 const dateToInput = document.getElementById('end-date-filter');
 
+
 searchInput.value=urlParams.get('q');
 partyInput.value=urlParams.get('party')==undefined ? '' : urlParams.get('party')
 dateFromInput.value=urlParams.get('from');
@@ -15,10 +16,14 @@ const start= urlParams.get('start');
 
 
 function setUpEventListeners(){
+    const refreshResultsButton = document.getElementById('refresh-results-button');
+    const optionButtons = document.getElementsByClassName('options-button');
+
 
     searchButton.addEventListener('click', (event) => {
         event.preventDefault();
         const searchInputValue = searchInput.value;
+        if(searchInputValue=='') return;
         const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
         const dateFromInputValue = dateFromInput.value;
         const dateToInputValue = dateToInput.value;
@@ -29,8 +34,23 @@ function setUpEventListeners(){
         window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
     });
 
-    let optionButtons = document.getElementsByClassName('options-button');
-    console.log(optionButtons.length)
+    searchInput.addEventListener('keypress', (event) =>{
+        if (event.code === "Enter") {  //checks whether the pressed key is "Enter"
+            event.preventDefault();
+            const searchInputValue = searchInput.value;
+            if(searchInputValue=='') return;
+            const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+            const dateFromInputValue = dateFromInput.value;
+            const dateToInputValue = dateToInput.value;
+            const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
+            const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
+            const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
+        
+            window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+        }
+    })
+    
+
     for (let index = 0; index < optionButtons.length; index++) {
         const optionButton = optionButtons[index];
 
@@ -38,8 +58,54 @@ function setUpEventListeners(){
             let hiddenMenu = event.target.parentElement.getElementsByClassName('relevant-menu-hidden')[0]
             console.log(hiddenMenu.style.display)
             hiddenMenu.style.display= (hiddenMenu.style.display=='' || hiddenMenu.style.display=='none') ? 'flex' : 'none'
+
+            hiddenMenu.children[0].addEventListener('click',(event)=>{
+                refreshResultsButton.style.display='block'
+                hiddenMenu.style.display= 'none'
+                hiddenMenu.parentElement.parentElement.parentElement.className='search-result-item relevant-search-result'
+            })
+
+            hiddenMenu.children[1].addEventListener('click',(event)=>{
+                refreshResultsButton.style.display='block'
+                console.log(hiddenMenu.style.display)
+                hiddenMenu.style.display= 'none'
+                hiddenMenu.parentElement.parentElement.parentElement.className='search-result-item not-relevant-result'
+            })
+            
         })
     }
+
+    refreshResultsButton.addEventListener('click', ()=>{
+        let relevantElements = document.getElementsByClassName('relevant-search-result');
+        let relevantIDs=[]
+        for (let index = 0; index < relevantElements.length; index++) {
+            relevantIDs.push(relevantElements[index].id)
+        }
+
+        let notRelevantElements = document.getElementsByClassName('not-relevant-result');
+        let notRelevantIDs=[]
+        for (let index = 0; index < notRelevantElements.length; index++) {
+            notRelevantIDs.push(notRelevantElements[index].id)
+        }
+        let query = urlParams.get('q');
+
+        const baseRequestUrl="http://localhost:3000/new-query"
+        let body = {"q":query,"relevant":relevantIDs,"notRelevant":notRelevantIDs}
+        const response = fetch(baseRequestUrl, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            method: 'POST', 
+            mode: 'cors',
+            body: JSON.stringify(body)
+        }).then(async response=>{
+            let searchResultsContainer = document.getElementById('search-results');
+            searchResultsContainer.innerHTML=""
+            data = await response.json()
+            if(parseResults(data))
+                setUpEventListeners()
+        });
+    })
 
 }
 
@@ -72,6 +138,8 @@ function createSearchResult(id,title,highlight,link){
 
     let outerDiv=document.createElement('div');
     outerDiv.setAttribute('class','search-result-item');
+    outerDiv.setAttribute('id',id)
+
     let linkH5=document.createElement('h5')
     linkH5.textContent=link.substring(0,(link.length<80 ? link.length : 80))+'...'
 
@@ -88,14 +156,18 @@ function createSearchResult(id,title,highlight,link){
     let optionsIcon=document.createElement('img')
     optionsIcon.setAttribute('src','/images/options.svg')
     optionsIcon.setAttribute('class','options-button')
-    optionsIcon.setAttribute('id',id)
 
 
     let divRelevantMenuHidden=document.createElement('div')
     divRelevantMenuHidden.setAttribute('class','relevant-menu-hidden')
     let relevantMenuH4=document.createElement('h4')
-    relevantMenuH4.textContent="This result isn't relevant"
+    relevantMenuH4.textContent="Mark as relevant"
+
+    let nonRelevantMenuH4=document.createElement('h4')
+    nonRelevantMenuH4.textContent="Mark as not relevant"
+
     divRelevantMenuHidden.append(relevantMenuH4)
+    divRelevantMenuHidden.append(nonRelevantMenuH4)
 
     
     divRelevantMenu.append(optionsIcon)
@@ -108,7 +180,8 @@ function createSearchResult(id,title,highlight,link){
     let resultTitleA=document.createElement('a')
     resultTitleA.setAttribute('href',link)
     let resultTitleH2=document.createElement('h2')
-    resultTitleH2.textContent=title
+    console.log(title)
+    resultTitleH2.textContent=title==undefined ? 'Untitled webpage' : title
     resultTitleA.append(resultTitleH2)
     let highlightP=document.createElement('p')
     highlightP.innerHTML=highlight
@@ -153,6 +226,10 @@ function parseResults(resultsJson){
         previousPage.remove()
         separator.remove()
         nextPage.setAttribute('href',window.location.href+'&start=10')
+        if(10>numberOfResults){
+            nextPage.remove()
+            separator.remove()
+        }
     }
     else{
         previousURL=window.location.href.split('&start=')[0]
