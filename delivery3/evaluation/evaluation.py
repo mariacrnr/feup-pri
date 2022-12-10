@@ -6,7 +6,7 @@ import json
 
 def evaluate(system,query_type,indexed):
 
-    queries = pd.read_json('titles.json')
+    queries = pd.read_json('stopwords.json')
     results=[]
     mean_avg_precision=[]
     graphs_data=[]
@@ -100,8 +100,8 @@ def evaluate(system,query_type,indexed):
     
 def run():
     print("Simple Query:")
-    evaluate('system_1','simple', True)
+    evaluate('system_2','simple', True)
     print("Complex Query:")
-    evaluate('system_1','complex', True)
+    evaluate('system_2','complex', True)
     
 run()

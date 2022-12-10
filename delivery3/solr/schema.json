@@ -24,6 +24,35 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.StopFilterFactory", "words":"lang/stopwords_pt.txt","ignoreCase":"true"},
+                    {"class":"solr.PortugueseStemFilterFactory"}
+                ]
+            }
+        },
+        {
+            "name":"titleParameter",
+            "class":"solr.TextField",
+            "large": true,
+            "stored": true,
+            "multiValued": false,
+            "charFilters":{"class":"solr.HTMLStripCharFilterFactory"},
+            "indexAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.PortugueseStemFilterFactory"}
+                ]
+            },
+            "queryAnalyzer":{
+                "tokenizer":{
+                    "class":"solr.StandardTokenizerFactory"
+                },
+                "filters":[
+                    {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
+                    {"class":"solr.LowerCaseFilterFactory"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             }
@@ -49,7 +78,7 @@
         },
         {
             "name": "title",
-            "type": "textParameter",
+            "type": "titleParameter",
             "indexed": true
         },
         {
