@@ -26,7 +26,7 @@ def combine_data(files):
     return combined_data
 
 def run():
-    parties = ['pcp']
+    parties = ['bloco','chega','il','livre','pan','pcp','ps','psd']
 
     for party in parties:
         print(party)

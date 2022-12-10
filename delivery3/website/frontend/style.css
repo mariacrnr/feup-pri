@@ -264,9 +264,36 @@ a{
     margin-bottom: 10px;
 }
 
-#results-time {
+#results-time-container{
+    margin-top: 10px;
     margin-bottom: 10px;
+
+    display: flex;
+    justify-content: space-between;
+    width: 35%;
 }
+
+#results-time-container button{
+    margin-right: 5%;
+    background-color: white;
+    border-radius: 3px;
+    padding: 8px;
+    border: 1px solid lightgrey;
+    cursor: pointer;
+    display: none;
+}
+
+.not-relevant-result h2,.not-relevant-result p,.not-relevant-result h5{
+    text-decoration: line-through;
+    color: rgb(109, 57, 57);
+}
+
+.relevant-search-result h2,.relevant-search-result p,.relevant-search-result h5{
+    color: rgb(71, 139, 75);
+}
+
+
+
 
 #search-results{
     display: flex;
@@ -298,7 +325,13 @@ a{
     margin: 0;
     font-weight: 300;
     font-size: 0.9em;
+    border-top: 1px solid;
 }
+
+.relevant-menu-hidden h4:first-child{
+    border-top: none;
+}
+
 
 .relevant-menu img{
     height: 1.3em;
@@ -316,6 +349,7 @@ a{
     border-radius: 0px 5px 5px 5px;
     cursor: pointer;
     user-select: none;
+    flex-direction: column;
  }
 
 .search-result-item a{
@@ -333,6 +367,7 @@ a{
 
 .search-result-item p{
     font-size: 0.9em;
+    width: 90%;
 }
 
 .search-result-item h2{

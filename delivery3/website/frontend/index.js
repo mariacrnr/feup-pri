@@ -9,6 +9,7 @@ const dateToInput = document.getElementById('end-date-filter');
 searchButton.addEventListener('click', (event) => {
     event.preventDefault();
     const searchInputValue = searchInput.value;
+    if(searchInputValue=='') return;
     const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
     const dateFromInputValue = dateFromInput.value;
     const dateToInputValue = dateToInput.value;
@@ -19,6 +20,24 @@ searchButton.addEventListener('click', (event) => {
     window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
 });
 
+
+
 randomButton.addEventListener('click', (event) => {
     event.preventDefault();
 });
+
+searchInput.addEventListener('keypress', (event) =>{
+    if (event.code === "Enter") {  //checks whether the pressed key is "Enter"
+        event.preventDefault();
+        const searchInputValue = searchInput.value;
+        if(searchInputValue=='') return;
+        const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+        const dateFromInputValue = dateFromInput.value;
+        const dateToInputValue = dateToInput.value;
+        const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
+        const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
+        const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
+    
+        window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+    }
+})
