@@ -75,7 +75,7 @@ function setUpEventListeners(){
         })
     }
 
-    refreshResultsButton.addEventListener('click', ()=>{
+    refreshResultsButton.addEventListener('click', (e)=>{
         let relevantElements = document.getElementsByClassName('relevant-search-result');
         let relevantIDs=[]
         for (let index = 0; index < relevantElements.length; index++) {
@@ -90,7 +90,11 @@ function setUpEventListeners(){
         let query = urlParams.get('q');
 
         const baseRequestUrl="http://localhost:3000/new-query"
-        let body = {"q":query,"relevant":relevantIDs,"notRelevant":notRelevantIDs}
+        const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+        const dateParam= (dateFromInput.value==null && dateToInput.value==null) ? '' : "["+dateFromInput.value+"T00:00:00Z TO "+dateToInput.value+"T23:59:59Z]";
+
+
+        let body = {"q":query,"relevant":relevantIDs,"notRelevant":notRelevantIDs,"party":partyInputValue,"dateRange":dateParam}
         const response = fetch(baseRequestUrl, {
             headers: {
                 'Content-Type': 'application/json'
@@ -102,8 +106,10 @@ function setUpEventListeners(){
             let searchResultsContainer = document.getElementById('search-results');
             searchResultsContainer.innerHTML=""
             data = await response.json()
-            if(parseResults(data))
+            if(parseResults(data,true)){
                 setUpEventListeners()
+                e.target.remove()
+            }
         });
     })
 
@@ -133,7 +139,7 @@ async function requestSolr(query){
 	return response;
 }
 
-function createSearchResult(id,title,highlight,link){
+function createSearchResult(id,title,highlight,link,refreshedResults){
     let searchResultsContainer = document.getElementById('search-results');
 
     let outerDiv=document.createElement('div');
@@ -157,24 +163,29 @@ function createSearchResult(id,title,highlight,link){
     optionsIcon.setAttribute('src','/images/options.svg')
     optionsIcon.setAttribute('class','options-button')
 
+    if(!refreshedResults){
+        let divRelevantMenuHidden=document.createElement('div')
+        divRelevantMenuHidden.setAttribute('class','relevant-menu-hidden')
+        let relevantMenuH4=document.createElement('h4')
+        relevantMenuH4.textContent="Mark as relevant"
+    
+        let nonRelevantMenuH4=document.createElement('h4')
+        nonRelevantMenuH4.textContent="Mark as not relevant"
+    
+        divRelevantMenuHidden.append(relevantMenuH4)
+        divRelevantMenuHidden.append(nonRelevantMenuH4)
+    
+        
+        divRelevantMenu.append(optionsIcon)
+        divRelevantMenu.append(divRelevantMenuHidden)
 
-    let divRelevantMenuHidden=document.createElement('div')
-    divRelevantMenuHidden.setAttribute('class','relevant-menu-hidden')
-    let relevantMenuH4=document.createElement('h4')
-    relevantMenuH4.textContent="Mark as relevant"
-
-    let nonRelevantMenuH4=document.createElement('h4')
-    nonRelevantMenuH4.textContent="Mark as not relevant"
-
-    divRelevantMenuHidden.append(relevantMenuH4)
-    divRelevantMenuHidden.append(nonRelevantMenuH4)
+        divLinkOptions.append(linkA)
+        divLinkOptions.append(divRelevantMenu)
+    } else divLinkOptions.append(linkA)
 
     
-    divRelevantMenu.append(optionsIcon)
-    divRelevantMenu.append(divRelevantMenuHidden)
 
-    divLinkOptions.append(linkA)
-    divLinkOptions.append(divRelevantMenu)
+    
 
 
     let resultTitleA=document.createElement('a')
@@ -194,7 +205,7 @@ function createSearchResult(id,title,highlight,link){
 
 }
 
-function parseResults(resultsJson){
+function parseResults(resultsJson,refreshedResults){
 	const timeSolrMilliseconds=resultsJson['responseHeader']['QTime']
 	const response=resultsJson['response']
 	const numberOfResults=response['numFound']
@@ -215,34 +226,44 @@ function parseResults(resultsJson){
         let link = result['link']
         let id=result['id']
 
-		createSearchResult(id,result['title'],highlighted,link)
+		createSearchResult(id,result['title'],highlighted,link,refreshedResults)
 	});
-
 
     let previousPage=document.getElementById('previous-page-button')
     let separator = document.getElementById('page-selector-sep')
     let nextPage=document.getElementById('next-page-button')
-    if(start==null){
-        previousPage.remove()
-        separator.remove()
-        nextPage.setAttribute('href',window.location.href+'&start=10')
-        if(10>numberOfResults){
-            nextPage.remove()
+    if(!refreshedResults){
+
+        if(start==null){
+            previousPage.remove()
             separator.remove()
+            nextPage.setAttribute('href',window.location.href+'&start=10')
+            if(10>numberOfResults){
+                nextPage.remove()
+                separator.remove()
+            }
+        }
+        else{
+            previousURL=window.location.href.split('&start=')[0]
+            let newStartValue=parseInt(start)+10
+            if(newStartValue>numberOfResults){
+                nextPage.remove()
+                separator.remove()
+            }
+            else{
+                nextPage.setAttribute('href',previousURL+'&start='+newStartValue)
+            }
+            newStartValue=parseInt(start)-10
+            previousPage.setAttribute('href',start==10 ? previousURL : previousURL+'&start='+newStartValue)
         }
     }
     else{
-        previousURL=window.location.href.split('&start=')[0]
-        let newStartValue=parseInt(start)+10
-        if(newStartValue>numberOfResults){
+        if(previousPage!=null)
+            previousPage.remove()
+        if(nextPage!=null)
             nextPage.remove()
+        if(separator!=null)
             separator.remove()
-        }
-        else{
-            nextPage.setAttribute('href',previousURL+'&start='+newStartValue)
-        }
-        newStartValue=parseInt(start)-10
-        previousPage.setAttribute('href',start==10 ? previousURL : previousURL+'&start='+newStartValue)
     }
     return true
 
@@ -250,7 +271,7 @@ function parseResults(resultsJson){
 
 
 requestSolr(searchInput.value).then(resultsJson=>{
-	if(parseResults(resultsJson))
+	if(parseResults(resultsJson,false))
         setUpEventListeners()
 
 })

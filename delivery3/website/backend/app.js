@@ -20,23 +20,26 @@ async function getElementById(id){
         mode: 'cors',
     })
     let data = await response.json()
-    console.log(data)
     return data
-
 }
 
 async function solrSearch(qop,query,party=null,dateRange=null,start=null){
-    const baseRequestUrl="http://localhost:8983/solr/parties/select?hl=on&hl.method=unified&defType=edismax&indent=true";
+    const baseRequestUrl="http://localhost:8983/solr/parties/query?hl=on&hl.method=unified&defType=edismax&indent=true";
     party=party!=null ? '&fq=party:' + party : ''
     query = '&q='+query
     start = start!=null ? '&start=' + start : ''
+    console.log("vai ser aqui")
+    console.log(dateRange)
     dateRange = dateRange!=null ? '&fq=date:' + dateRange : ''
     
-    let requestUrl=baseRequestUrl+'&q.op='+qop+query+'&qf=title^5 text'+party+dateRange+'&rows=10'+start;
-    console.log(requestUrl)
+    let requestUrl=baseRequestUrl+'&q.op='+qop;
     let response = await fetch(requestUrl,{
-        method: 'GET', 
+        headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: 'POST', 
         mode: 'cors',
+        body:query+'&qf=title^5 text'+party+dateRange+'&rows=10'+start
     })
     let data = await response.json()
     return data
@@ -49,6 +52,8 @@ app.get('/', async (req, res) => {
 
 app.post('/new-query', async (req, res) => {
     let query = req.body.q
+    let party = req.body.party
+    let dateRange = req.body.dateRange
     let relevant = req.body.relevant
     let notRelevant = req.body.notRelevant
 
@@ -107,7 +112,7 @@ app.post('/new-query', async (req, res) => {
     }
 
 
-    let relevantCoefficient= 5.0/relevant.length
+    let relevantCoefficient= 10.0/relevant.length
     let notRelevantCoefficient= 1.0/notRelevant.length
 
     Object.keys(relevantVector).forEach(key=>{
@@ -132,11 +137,11 @@ app.post('/new-query', async (req, res) => {
     let queryString =""
 
     Object.keys(queryVector).forEach(key=>{
-        if(queryVector[key]>0){
+        if(queryVector[key]>0)
             queryString+=key+'^'+Math.round(queryVector[key]).toString()+' '
-        }
+        
     })
-    let response = await solrSearch("OR",queryString)
+    let response = await solrSearch("OR",queryString,party,dateRange)
     res.send(response)
 })
 
