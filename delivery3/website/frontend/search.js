@@ -1,19 +1,41 @@
-const url = window.location.search;
-const urlParams = new URLSearchParams(url);
-
-const searchButton = document.getElementById('search-button');
-const searchInput = document.getElementById('search-input');
-const partyInput = document.getElementById('party-filter');
-const dateFromInput = document.getElementById('start-date-filter');
-const dateToInput = document.getElementById('end-date-filter');
 
 
-searchInput.value=urlParams.get('q');
-partyInput.value=urlParams.get('party')==undefined ? '' : urlParams.get('party')
-dateFromInput.value=urlParams.get('from');
-dateToInput.value=urlParams.get('to');
-const start= urlParams.get('start');
+function search(){
+    const searchInputValue = searchInput.value;
+    if(searchInputValue=='') return;
+    const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+    const dateFromInputValue = dateFromInput.value;
+    const dateToInputValue = dateToInput.value;
+    const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
+    const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
+    const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
 
+    window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+}
+
+async function requestSolr(query,qop="AND",start=0){
+    console.log(start)
+    const baseRequestUrl="http://localhost:3000/";
+    const rows=10;
+    const dateFrom= dateFromInput.value=='' ? '1970-01-01' : dateFromInput.value
+    const dateTo= dateToInput.value=='' ? '2023-01-01' : dateToInput.value
+    const dateParam= (dateFromInput.value==null && dateToInput.value==null) ? '' : "&dateRange=["+dateFrom+"T00:00:00Z TO "+dateTo+"T23:59:59Z]";
+    const partyParam= partyInput.value=='' ? '' : '&party='+partyInput.value
+    let startParam= start==null ? '' : '&start='+start
+    let requestUrl=baseRequestUrl;
+
+    const response = await fetch(requestUrl, {
+        headers:{
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+		method: 'POST', // *GET, POST, PUT, DELETE, etc.
+		mode: 'cors', // no-cors, *cors, same-origin
+        body: 'qop='+qop+'&q='+query+partyParam+dateParam+startParam
+	}).then(response=>{
+		return response.json();
+	});
+	return response;
+}
 
 function setUpEventListeners(){
     const refreshResultsButton = document.getElementById('refresh-results-button');
@@ -22,31 +44,13 @@ function setUpEventListeners(){
 
     searchButton.addEventListener('click', (event) => {
         event.preventDefault();
-        const searchInputValue = searchInput.value;
-        if(searchInputValue=='') return;
-        const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
-        const dateFromInputValue = dateFromInput.value;
-        const dateToInputValue = dateToInput.value;
-        const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
-        const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
-        const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
-    
-        window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+        search()
     });
 
     searchInput.addEventListener('keypress', (event) =>{
         if (event.code === "Enter") {  //checks whether the pressed key is "Enter"
             event.preventDefault();
-            const searchInputValue = searchInput.value;
-            if(searchInputValue=='') return;
-            const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
-            const dateFromInputValue = dateFromInput.value;
-            const dateToInputValue = dateToInput.value;
-            const partyParam= partyInputValue=='' ? '' : "&party="+partyInputValue
-            const dateFromParam = (dateFromInputValue=='') ? '' : "&from="+dateFromInputValue
-            const dateToParam = (dateToInputValue=='') ? '' : "&to="+dateToInputValue
-        
-            window.location.href="http://localhost:8080/search-results.html?q="+searchInputValue+partyParam+dateFromParam+dateToParam
+            search()
         }
     })
     
@@ -56,7 +60,6 @@ function setUpEventListeners(){
 
         optionButton.addEventListener('click',(event)=>{
             let hiddenMenu = event.target.parentElement.getElementsByClassName('relevant-menu-hidden')[0]
-            console.log(hiddenMenu.style.display)
             hiddenMenu.style.display= (hiddenMenu.style.display=='' || hiddenMenu.style.display=='none') ? 'flex' : 'none'
 
             hiddenMenu.children[0].addEventListener('click',(event)=>{
@@ -67,7 +70,6 @@ function setUpEventListeners(){
 
             hiddenMenu.children[1].addEventListener('click',(event)=>{
                 refreshResultsButton.style.display='block'
-                console.log(hiddenMenu.style.display)
                 hiddenMenu.style.display= 'none'
                 hiddenMenu.parentElement.parentElement.parentElement.className='search-result-item not-relevant-result'
             })
@@ -75,7 +77,7 @@ function setUpEventListeners(){
         })
     }
 
-    refreshResultsButton.addEventListener('click', ()=>{
+    refreshResultsButton.addEventListener('click', (e)=>{
         let relevantElements = document.getElementsByClassName('relevant-search-result');
         let relevantIDs=[]
         for (let index = 0; index < relevantElements.length; index++) {
@@ -90,7 +92,11 @@ function setUpEventListeners(){
         let query = urlParams.get('q');
 
         const baseRequestUrl="http://localhost:3000/new-query"
-        let body = {"q":query,"relevant":relevantIDs,"notRelevant":notRelevantIDs}
+        const partyInputValue = partyInput.options[partyInput.selectedIndex].value;
+        const dateParam= (dateFromInput.value=='' && dateToInput.value=='') ? '' : "["+dateFromInput.value+"T00:00:00Z TO "+dateToInput.value+"T23:59:59Z]";
+
+
+        let body = {"q":query,"relevant":relevantIDs,"notRelevant":notRelevantIDs,"party":partyInputValue,"dateRange":dateParam}
         const response = fetch(baseRequestUrl, {
             headers: {
                 'Content-Type': 'application/json'
@@ -99,39 +105,60 @@ function setUpEventListeners(){
             mode: 'cors',
             body: JSON.stringify(body)
         }).then(async response=>{
-            let searchResultsContainer = document.getElementById('search-results');
-            searchResultsContainer.innerHTML=""
             data = await response.json()
-            if(parseResults(data))
+            console.log(data)
+            if(parseResults(data)){
                 setUpEventListeners()
+                e.target.style.display='none'
+            }
+            urlParams.set('q',data['responseHeader']['params']['q'])
+            urlParams.set('qop',data['responseHeader']['params']['q.op'])
+
         });
     })
 
+    
+}
+
+function setUpPageSwitch(){
+    let previousPage=document.getElementById('previous-page-button')
+    let nextPage=document.getElementById('next-page-button')
+    
+    previousPage.addEventListener('click',(event)=>{
+        event.preventDefault()
+        if(urlParams.get('start')=='')
+            return
+        let qop=urlParams.get('qop')==null ? "AND" : "OR"
+        let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+    
+        requestSolr(urlParams.get('q'),qop,start-10).then(resultsJson=>{
+            if(urlParams.get('start')-10==0)
+                urlParams.delete('start')
+            else{
+                urlParams.set('start',start-10)
+            }
+            if(parseResults(resultsJson))
+                setUpEventListeners()
+            
+        })
+    })
+    
+    nextPage.addEventListener('click',(event)=>{
+        event.preventDefault()
+        if(urlParams.get('start')=='')
+            return
+        let qop=urlParams.get('qop')==null ? "AND" : "OR"
+        let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+        requestSolr(urlParams.get('q'),qop,start+10).then(resultsJson=>{
+            urlParams.set('start',start+10)
+            if(parseResults(resultsJson))
+                setUpEventListeners()
+        })
+    })    
 }
 
 
 
-async function requestSolr(query){
-    const baseRequestUrl="http://localhost:3000/?";
-    const rows=10;
-    const dateFrom= dateFromInput.value=='' ? '1970-01-01' : dateFromInput.value
-    const dateTo= dateToInput.value=='' ? '2023-01-01' : dateToInput.value
-    const dateParam= (dateFromInput.value==null && dateToInput.value==null) ? '' : "&dateRange=["+dateFrom+"T00:00:00Z TO "+dateTo+"T23:59:59Z]";
-    const partyParam= partyInput.value=='' ? '' : '&party='+partyInput.value
-    let qop="AND";
-    let qf="title^5 text";
-    let startParam= start==null ? '' : '&start='+start
-
-    let requestUrl=baseRequestUrl+'q='+query+partyParam+dateParam+startParam;
-
-    const response = await fetch(requestUrl, {
-		method: 'GET', // *GET, POST, PUT, DELETE, etc.
-		mode: 'cors', // no-cors, *cors, same-origin
-	}).then(response=>{
-		return response.json();
-	});
-	return response;
-}
 
 function createSearchResult(id,title,highlight,link){
     let searchResultsContainer = document.getElementById('search-results');
@@ -157,7 +184,6 @@ function createSearchResult(id,title,highlight,link){
     optionsIcon.setAttribute('src','/images/options.svg')
     optionsIcon.setAttribute('class','options-button')
 
-
     let divRelevantMenuHidden=document.createElement('div')
     divRelevantMenuHidden.setAttribute('class','relevant-menu-hidden')
     let relevantMenuH4=document.createElement('h4')
@@ -177,10 +203,10 @@ function createSearchResult(id,title,highlight,link){
     divLinkOptions.append(divRelevantMenu)
 
 
+
     let resultTitleA=document.createElement('a')
     resultTitleA.setAttribute('href',link)
     let resultTitleH2=document.createElement('h2')
-    console.log(title)
     resultTitleH2.textContent=title==undefined ? 'Untitled webpage' : title
     resultTitleA.append(resultTitleH2)
     let highlightP=document.createElement('p')
@@ -195,6 +221,10 @@ function createSearchResult(id,title,highlight,link){
 }
 
 function parseResults(resultsJson){
+    let searchResultsContainer = document.getElementById('search-results');
+    while (searchResultsContainer.firstChild) {
+        searchResultsContainer.removeChild(searchResultsContainer.firstChild);
+    }
 	const timeSolrMilliseconds=resultsJson['responseHeader']['QTime']
 	const response=resultsJson['response']
 	const numberOfResults=response['numFound']
@@ -218,41 +248,58 @@ function parseResults(resultsJson){
 		createSearchResult(id,result['title'],highlighted,link)
 	});
 
-
     let previousPage=document.getElementById('previous-page-button')
     let separator = document.getElementById('page-selector-sep')
     let nextPage=document.getElementById('next-page-button')
-    if(start==null){
-        previousPage.remove()
-        separator.remove()
-        nextPage.setAttribute('href',window.location.href+'&start=10')
+    let start= urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+
+    if(start==null||start==0){
+        previousPage.style.display='none'
+        separator.style.display='none'
         if(10>numberOfResults){
-            nextPage.remove()
-            separator.remove()
+            nextPage.style.display='none'
+            separator.style.display='none'
         }
     }
     else{
-        previousURL=window.location.href.split('&start=')[0]
+        previousPage.style.display='block'
+        separator.style.display='block'
+        nextPage.style.display='block'
+
         let newStartValue=parseInt(start)+10
         if(newStartValue>numberOfResults){
-            nextPage.remove()
-            separator.remove()
-        }
-        else{
-            nextPage.setAttribute('href',previousURL+'&start='+newStartValue)
+            nextPage.style.display='none'
+            separator.style.display='none'
         }
         newStartValue=parseInt(start)-10
-        previousPage.setAttribute('href',start==10 ? previousURL : previousURL+'&start='+newStartValue)
     }
+
     return true
 
 }
+const url = window.location.search;
+const urlParams = new URLSearchParams(url);
 
+const searchButton = document.getElementById('search-button');
+const searchInput = document.getElementById('search-input');
+const partyInput = document.getElementById('party-filter');
+const dateFromInput = document.getElementById('start-date-filter');
+const dateToInput = document.getElementById('end-date-filter');
+
+
+searchInput.value=urlParams.get('q');
+partyInput.value=urlParams.get('party')==undefined ? '' : urlParams.get('party')
+dateFromInput.value=urlParams.get('from');
+dateToInput.value=urlParams.get('to');
+let start= urlParams.get('start');
 
 requestSolr(searchInput.value).then(resultsJson=>{
-	if(parseResults(resultsJson))
+	if(parseResults(resultsJson)){
         setUpEventListeners()
+        setUpPageSwitch()
+    }
 
 })
+
 
 
