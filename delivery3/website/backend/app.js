@@ -9,6 +9,7 @@ const { response } = require('express');
 const app = express()
 app.use(cors())
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
 
 const port = 3000
@@ -25,12 +26,10 @@ async function getElementById(id){
 
 async function solrSearch(qop,query,party=null,dateRange=null,start=null){
     const baseRequestUrl="http://localhost:8983/solr/parties/query?hl=on&hl.method=unified&defType=edismax&indent=true";
-    party=party!=null ? '&fq=party:' + party : ''
+    party= (party!=null && party!='') ? '&fq=party:' + party : ''
     query = '&q='+query
-    start = start!=null ? '&start=' + start : ''
-    console.log("vai ser aqui")
-    console.log(dateRange)
-    dateRange = dateRange!=null ? '&fq=date:' + dateRange : ''
+    start = (start!=null && start!='') ? '&start=' + start : ''
+    dateRange = (dateRange!=null && dateRange!='') ? '&fq=date:' + dateRange : ''
     
     let requestUrl=baseRequestUrl+'&q.op='+qop;
     let response = await fetch(requestUrl,{
@@ -45,8 +44,8 @@ async function solrSearch(qop,query,party=null,dateRange=null,start=null){
     return data
 }
 
-app.get('/', async (req, res) => {
-    let response = await solrSearch("AND",req.query.q,req.query.party,req.query.dateRange,req.query.start)
+app.post('/', async (req, res) => {
+    let response = await solrSearch(req.body.qop,req.body.q,req.body.party,req.body.dateRange,req.body.start)
     res.send(response)
 })
 
