@@ -7,6 +7,11 @@ solr start
 
 sleep 2
 
+# Add synonyms
+mkdir -p /var/solr/data/parties/res
+cp /data/synonyms.txt /var/solr/data/parties/res/synonyms.txt
+echo "Added synonyms"
+
 # Schema definition via API
 curl -X POST -H 'Content-type:application/json' \
     --data-binary @/data/schema.json \

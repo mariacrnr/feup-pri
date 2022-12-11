@@ -1,0 +1,99 @@
+[
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=grupo parlamentar&qf=title text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:PSD&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=grupo parlamentar&qf=title^5 text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:PSD&rows=30&stopwords=true&synonyms=true",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20191119234006/https://www.psd.pt/gppsd/",
+            "https://arquivo.pt/wayback/20191119230506/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20190710174005/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/",
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ]         
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=candidato presidencial&qf=title text&fq=date:[2015-01-01T00:00:00Z TO 2016-02-01T23:59:59Z]&fq=party:BLOCO&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=candidato presidencial&ps=100&qf=title^5 text&fq=date:[2015-01-01T00:00:00Z TO 2016-02-01T23:59:59Z]&fq=party:BLOCO&rows=30&stopwords=true&synonyms=true",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20151112125221/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151110105408/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151201103005/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20160121123250/http://www.bloco.org/content/view/3079/1/",
+            "https://arquivo.pt/wayback/20151201140823/http://www.bloco.org/content/view/3078/77/"
+        ]             
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=programa eleitoral legislativas&qf=title text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:IL&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=programa^3 eleitoral legislativas^5&qf=title^5 text&fq=date:[2019-01-01T00:00:00Z TO 2019-12-31T23:59:59Z]&fq=party:IL&rows=30&stopwords=true&synonyms=true",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20191206164929/https://iniciativaliberal.pt/legislativas2019/",
+            "https://arquivo.pt/wayback/20190921213633/https://iniciativaliberal.pt/legislativas2019/",
+            "https://arquivo.pt/wayback/20190920210816/https://iniciativaliberal.pt/legislativas2019/",
+            "https://arquivo.pt/wayback/20191206191045/https://iniciativaliberal.pt/legislativas2019/propostas/melhoria-da-qualidade-e-eficie%cc%82ncia-legislativa/",
+            "https://arquivo.pt/wayback/20191014172951/https://iniciativaliberal.pt/programas-eleitorais/",
+            "https://arquivo.pt/wayback/20191206164431/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190830210309/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190105015837/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190112040556/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190116121149/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190117112228/https://iniciativaliberal.pt/programa",
+            "https://arquivo.pt/wayback/20190320191327/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190606144449/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190818004811/https://iniciativaliberal.pt/programa/",
+            "https://arquivo.pt/wayback/20190522134023/https://iniciativaliberal.pt/programa/"
+        ]               
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=aborto&qf=title text&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=aborto&qf=title^10 text&rows=30&stopwords=true&synonyms=true",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20031122104714/http://www.pcp.pt/avante/1229/2903h2.html",
+            "https://arquivo.pt/wayback/20200511153006/https://partidolivre.pt/tag/ivg",
+            "https://arquivo.pt/wayback/20170210184944/https://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20170210202417/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170802172433/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20170802172856/https://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20171210113124/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20171210113454/https://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20151110135413/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151110135515/http://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20151201132817/http://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20151201132715/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160204161238/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160204161401/http://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20160620192845/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20160620192957/http://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20180428040152/https://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20180428041153/https://livrept.net/tag/ivg",
+            "https://arquivo.pt/wayback/20090926112555/http://www.ps.pt/index.php?option=com_content&task=blogcategory&id=37&Itemid=48",
+            "https://arquivo.pt/wayback/20080314170643/http://www.ps.pt/index.php?option=com_content&task=blogcategory&id=37&Itemid=48",
+            "https://arquivo.pt/wayback/20081022035814/http://www.ps.pt/index.php?option=com_content&task=blogcategory&id=37&Itemid=48",
+            "https://arquivo.pt/wayback/20090624200444/http://www.ps.pt/index.php?option=com_content&task=blogcategory&id=37&Itemid=48",
+            "https://arquivo.pt/wayback/20151005143653/http://livrept.net/tag/aborto",
+            "https://arquivo.pt/wayback/20151005143758/http://livrept.net/tag/ivg"
+        ]            
+    },
+    {
+        "simple_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=eutanásia&qf=title text&fq=party:PS&rows=30",
+        "complex_query":"http://localhost:8983/solr/parties/select?defType=edismax&indent=true&q.op=AND&q=eutan%C3%A1sia&qf=title^10%20text&fq=party:PS&rows=30&stopwords=true&synonyms=true",
+        "simple_links":[
+            "https://arquivo.pt/wayback/20190522135909/https://www.psd.pt/partido/orgaos-nacionais/grupo-parlamentar/"
+        ],
+        "complex_links":[
+            "https://arquivo.pt/wayback/20181026090956/https://ps.pt/index.php/app_event/morte-medicamente-assistida-ps-de-portas-abertas/",
+            "https://arquivo.pt/wayback/20190418183745/https://ps.pt/index.php/app_event/morte-medicamente-assistida-ps-de-portas-abertas/",
+            "https://arquivo.pt/wayback/20180728044643/http://ps.pt/index.php/2018/05/29/ps-garante-respeito-pela-vontade-do-doente-que-pede-para-morrer/",
+            "https://arquivo.pt/wayback/20200305023801/https://ps.pt/index.php/2020/02/18/ps-reabre-dialogo-com-cds/"
+        ]       
+    }
+]

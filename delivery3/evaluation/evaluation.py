@@ -6,7 +6,7 @@ import json
 
 def evaluate(system,query_type,indexed):
 
-    queries = pd.read_json('stopwords.json')
+    queries = pd.read_json('synonyms.json')
     results=[]
     mean_avg_precision=[]
     graphs_data=[]

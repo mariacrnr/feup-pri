@@ -14,6 +14,8 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.SynonymGraphFilterFactory", "synonyms":"res/synonyms.txt", "ignoreCase":"true", "expand":"true"},
+                    {"class": "solr.FlattenGraphFilterFactory"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             },
@@ -24,6 +26,7 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.SynonymGraphFilterFactory", "synonyms":"res/synonyms.txt", "ignoreCase":"true", "expand":"true"},
                     {"class":"solr.StopFilterFactory", "words":"lang/stopwords_pt.txt","ignoreCase":"true"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
@@ -43,6 +46,8 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.SynonymGraphFilterFactory", "synonyms":"res/synonyms.txt", "ignoreCase":"true", "expand":"true"},
+                    {"class": "solr.FlattenGraphFilterFactory"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             },
@@ -53,6 +58,7 @@
                 "filters":[
                     {"class":"solr.ASCIIFoldingFilterFactory", "preserveOriginal":true},
                     {"class":"solr.LowerCaseFilterFactory"},
+                    {"class":"solr.SynonymGraphFilterFactory", "synonyms":"res/synonyms.txt", "ignoreCase":"true", "expand":"true"},
                     {"class":"solr.PortugueseStemFilterFactory"}
                 ]
             }
