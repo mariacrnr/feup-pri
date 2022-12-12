@@ -11,6 +11,7 @@ body{
 a{
     text-decoration: none;
     color: black;
+    cursor: pointer;
 }
 
 #main-container{
@@ -368,6 +369,7 @@ a{
 .search-result-item p{
     font-size: 0.9em;
     width: 90%;
+    word-wrap: break-word;
 }
 
 .search-result-item h2{

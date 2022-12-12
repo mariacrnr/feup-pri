@@ -14,9 +14,8 @@ function search(){
 }
 
 async function requestSolr(query,qop="AND",start=0){
-    console.log(start)
+    console.log(start,query)
     const baseRequestUrl="http://localhost:3000/";
-    const rows=10;
     const dateFrom= dateFromInput.value=='' ? '1970-01-01' : dateFromInput.value
     const dateTo= dateToInput.value=='' ? '2023-01-01' : dateToInput.value
     const dateParam= (dateFromInput.value==null && dateToInput.value==null) ? '' : "&dateRange=["+dateFrom+"T00:00:00Z TO "+dateTo+"T23:59:59Z]";
@@ -34,6 +33,7 @@ async function requestSolr(query,qop="AND",start=0){
 	}).then(response=>{
 		return response.json();
 	});
+    console.log(response)
 	return response;
 }
 
@@ -106,57 +106,61 @@ function setUpEventListeners(){
             body: JSON.stringify(body)
         }).then(async response=>{
             data = await response.json()
-            console.log(data)
             if(parseResults(data)){
+                console.log(data)
                 setUpEventListeners()
                 e.target.style.display='none'
             }
+            console.log(data)
+
             urlParams.set('q',data['responseHeader']['params']['q'])
             urlParams.set('qop',data['responseHeader']['params']['q.op'])
+            setUpPageSwitch()
 
         });
     })
 
-    
-}
-
-function setUpPageSwitch(){
     let previousPage=document.getElementById('previous-page-button')
     let nextPage=document.getElementById('next-page-button')
     
-    previousPage.addEventListener('click',(event)=>{
-        event.preventDefault()
-        if(urlParams.get('start')=='')
-            return
-        let qop=urlParams.get('qop')==null ? "AND" : "OR"
-        let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+    previousPage.removeEventListener('click',previousPageClick)
+    previousPage.addEventListener('click',previousPageClick)
     
-        requestSolr(urlParams.get('q'),qop,start-10).then(resultsJson=>{
-            if(urlParams.get('start')-10==0)
-                urlParams.delete('start')
-            else{
-                urlParams.set('start',start-10)
-            }
-            if(parseResults(resultsJson))
-                setUpEventListeners()
-            
-        })
-    })
-    
-    nextPage.addEventListener('click',(event)=>{
-        event.preventDefault()
-        if(urlParams.get('start')=='')
-            return
-        let qop=urlParams.get('qop')==null ? "AND" : "OR"
-        let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
-        requestSolr(urlParams.get('q'),qop,start+10).then(resultsJson=>{
-            urlParams.set('start',start+10)
-            if(parseResults(resultsJson))
-                setUpEventListeners()
-        })
-    })    
+    nextPage.removeEventListener('click',previousPageClick)
+    nextPage.addEventListener('click',nextPageClick)    
+
 }
 
+function nextPageClick(){
+    if(urlParams.get('start')=='')
+        return
+    let qop=urlParams.get('qop')==null ? "AND" : "OR"
+    let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+    urlParams.set('start',start+10)
+    requestSolr(urlParams.get('q'),qop,start+10).then(resultsJson=>{
+        if(parseResults(resultsJson))
+            setUpEventListeners()
+    })
+}
+
+function previousPageClick(){
+    if(urlParams.get('start')==''){
+        return  
+    }
+    let qop=urlParams.get('qop')==null ? "AND" : "OR"
+    let start = urlParams.get('start')==null ? 0 : parseInt(urlParams.get('start'))
+    if(urlParams.get('start')-10==0)
+        urlParams.delete('start')
+    else{
+        urlParams.set('start',start-10)
+    }
+    requestSolr(urlParams.get('q'),qop,start-10).then(resultsJson=>{
+        
+        if(parseResults(resultsJson))
+            setUpEventListeners()
+        
+    })
+}
 
 
 
@@ -233,7 +237,7 @@ function parseResults(resultsJson){
 	const resultHighlights=resultsJson['highlighting']
     
     let resultsAndTimeH5=document.getElementById("results-time");
-    resultsAndTimeH5.textContent= (numberFoundExact ? 'Exactly ' : 'About ') +numberOfResults.toLocaleString()+ ' results ('+timeSolrMilliseconds/1000.0+' seconds)'
+    resultsAndTimeH5.innerHTML= (numberFoundExact ? 'Exactly ' : 'About ') +numberOfResults.toLocaleString()+ ' results ('+timeSolrMilliseconds/1000.0+' seconds)'
 
     
 	resultDocs.forEach(result => {
@@ -296,7 +300,6 @@ let start= urlParams.get('start');
 requestSolr(searchInput.value).then(resultsJson=>{
 	if(parseResults(resultsJson)){
         setUpEventListeners()
-        setUpPageSwitch()
     }
 
 })

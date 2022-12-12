@@ -25,7 +25,9 @@ async function getElementById(id){
 }
 
 async function solrSearch(qop,query,party=null,dateRange=null,start=null){
-    const baseRequestUrl="http://localhost:8983/solr/parties/query?hl=on&hl.method=unified&defType=edismax&indent=true";
+    console.log(query)
+
+    const baseRequestUrl="http://localhost:8983/solr/parties/select?hl=on&hl.method=unified&defType=edismax&indent=true";
     party= (party!=null && party!='') ? '&fq=party:' + party : ''
     query = '&q='+query
     start = (start!=null && start!='') ? '&start=' + start : ''
@@ -38,7 +40,7 @@ async function solrSearch(qop,query,party=null,dateRange=null,start=null){
         },
         method: 'POST', 
         mode: 'cors',
-        body:query+'&qf=title^5 text'+party+dateRange+'&rows=10'+start
+        body:query+'&qf=title^5 text'+party+dateRange+'&rows=10'+start+"&stopwords=true&synonyms=true"
     })
     let data = await response.json()
     return data
@@ -60,7 +62,7 @@ app.post('/new-query', async (req, res) => {
     let notRelevantVector={}
     let queryVector = {}
 
-    words = query.match(/\b(\w+)\b/g)
+    words = query.toLowerCase().match(/\b(\w+)\b/g)
     words.forEach(word => {
         if(word in queryVector){
             queryVector[word]+=1
@@ -79,7 +81,7 @@ app.post('/new-query', async (req, res) => {
         if(result['response']['numFound']>0){
             textContent = result['response']['docs'][0]['text']
         }
-        var words = textContent.match(/\b(\w+)\b/g)
+        var words = textContent.toLowerCase().match(/\b(\w+)\b/g)
         words.forEach(word => {
             if(word in relevantVector){
                 relevantVector[word]+=1
@@ -98,7 +100,7 @@ app.post('/new-query', async (req, res) => {
         if(result['response']['numFound']>0){
             textContent = result['response']['docs'][0]['text']
         }
-        words = textContent.match(/\b(\w+)\b/g)
+        words = textContent.toLowerCase().match(/\b(\w+)\b/g)
         words.forEach(word => {
             if(word in notRelevantVector){
                 notRelevantVector[word]+=1
@@ -111,8 +113,9 @@ app.post('/new-query', async (req, res) => {
     }
 
 
-    let relevantCoefficient= 10.0/relevant.length
-    let notRelevantCoefficient= 1.0/notRelevant.length
+    let relevantCoefficient= 0.8/relevant.length
+    let notRelevantCoefficient= 0.2/notRelevant.length
+
 
     Object.keys(relevantVector).forEach(key=>{
         if(key in queryVector){
@@ -133,13 +136,13 @@ app.post('/new-query', async (req, res) => {
     })
     console.log(queryVector)
 
-    let queryString =""
+    let queryString ="("
 
     Object.keys(queryVector).forEach(key=>{
-        if(queryVector[key]>0)
-            queryString+=key+'^'+Math.round(queryVector[key]).toString()+' '
-        
+            queryString+=key+'^'+(Math.round((queryVector[key] + Number.EPSILON) * 100) / 100).toString()+' '
     })
+    queryString+=") AND ("+ query + ")"
+
     let response = await solrSearch("OR",queryString,party,dateRange)
     res.send(response)
 })
